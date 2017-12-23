@@ -6,18 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://realwate.com">
-  <title>Archives: 2017/11 | Realwate的博客</title>
+  <title>http缓存机制 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天流若水Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Realwate的博客">
-<meta property="og:url" content="http://realwate.com/archives/2017/11/index.html">
+  <meta name="description" content="知乎上看到张云龙老师的回答，其中关于http缓存的相关知识总结。">
+<meta name="keywords" content="综合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http缓存机制">
+<meta property="og:url" content="http://realwate.com/http缓存机制/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="天流若水Blog">
+<meta property="og:description" content="知乎上看到张云龙老师的回答，其中关于http缓存的相关知识总结。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://realwate.com/assets/img/http/1.png">
+<meta property="og:updated_time" content="2017-12-23T07:32:18.574Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="天流若水Blog">
+<meta name="twitter:title" content="http缓存机制">
+<meta name="twitter:description" content="知乎上看到张云龙老师的回答，其中关于http缓存的相关知识总结。">
+<meta name="twitter:image" content="http://realwate.com/assets/img/http/1.png">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -139,74 +143,94 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-http缓存机制" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/使用chrome分析内存问题/" class="archive-article-date">
-  	<time datetime="2017-11-26T06:17:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-26</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/使用chrome分析内存问题/">使用chrome分析内存问题</a>
+    <h1 class="article-title" itemprop="name">
+      http缓存机制
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/面向对象思考和设计原则/" class="archive-article-date">
-  	<time datetime="2017-11-23T12:00:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-23</time>
+        <a href="/http缓存机制/" class="archive-article-date">
+  	<time datetime="2017-12-23T05:37:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-23</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/面向对象思考和设计原则/">面向对象思考和设计原则</a>
-    </h1>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
 
-        <div class="article-info info-on-right">
-          
+      <!-- 目录内容 -->
+             
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存过期"><span class="toc-number">2.</span> <span class="toc-text">缓存过期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存对比"><span class="toc-number">3.</span> <span class="toc-text">缓存对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#流程说明"><span class="toc-number">4.</span> <span class="toc-text">流程说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存问题"><span class="toc-number">5.</span> <span class="toc-text">缓存问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#时间戳"><span class="toc-number">5.1.</span> <span class="toc-text">时间戳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器设置"><span class="toc-number">5.2.</span> <span class="toc-text">服务器设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加版本号或hash参数"><span class="toc-number">5.3.</span> <span class="toc-text">添加版本号或hash参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#终极方案"><span class="toc-number">5.4.</span> <span class="toc-text">终极方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CDN"><span class="toc-number">5.5.</span> <span class="toc-text">CDN</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考链接"><span class="toc-number">6.</span> <span class="toc-text">参考链接</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
+             <!-- 目录内容结束 -->
+
+        <p>知乎上看到张云龙老师的<a href="https://www.zhihu.com/question/20790576/answer/32602154">回答</a>，其中关于<code>http</code>缓存的相关知识总结。<a id="more"></a></p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>####可缓存性<br><strong>决定 Http 响应内容是否可以被客户端或者代理服务器缓存。</strong><br>只由响应头Cache-Control决定，反过来，Cache-Control决定了缓存多方面的性质，不仅是可缓存性<br>对于浏览器来说，只有 no-store 不会在客户端缓存任何响应数据，其他都会缓存。</p>
+<h3 id="缓存过期"><a href="#缓存过期" class="headerlink" title="缓存过期"></a>缓存过期</h3><p><strong>决定客户端是否可直接从本地缓存数据中加载数据并展示</strong><br>设置一个时间,超过这个时间缓存被认为过期(单位秒)，主要有以下两个响应头决定<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Expires:  		// http1.0 绝对日期 </span><br><span class="line">Caci-Control:max-age=0 ; //http1.1 相对日期  相对于请求的时间 优先级高</span><br></pre></td></tr></table></figure></p>
+<p>Cache-Control的值有多种，它们 能控制可缓存性，能决定缓存过期时间、缓存可校验性，具体的值及含义可查看<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control">MDN</a></p>
+<h3 id="缓存对比"><a href="#缓存对比" class="headerlink" title="缓存对比"></a>缓存对比</h3><p>缓存过期后，会重新发送请求，但是服务器资源不一定就更新了，接受到请求时，如果有以下请求头服务器会再次验证，如果结果一致返回304，指示浏览器继续使用本地缓存。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">If-Modified-Since:  // 等于上次返回的响应头 Last-Modified</span><br><span class="line">If-None-Match:  // 等于上次返回的响应头 ETag</span><br></pre></td></tr></table></figure></p>
+<p>按照http/1.1规范，如果同时使用If-Modified-Since和If-None-Match则服务端必须两个都验证通过后才能返回304</p>
+<h3 id="流程说明"><a href="#流程说明" class="headerlink" title="流程说明"></a>流程说明</h3><ol>
+<li>第一次请求某个资源时，服务器返回的<code>Cache-Control</code>字段指示浏览器进行缓存， <code>Expires</code> 或者 <code>max-age</code>是判断缓存过期的依据，Last-Modified 和ETag用于 服务器再次验证。</li>
+<li>再次请求，缓存没过期直接使用。否则会发送请求，并带上  If-Modified-Since( 值为缓存的 Last-Modified )，If-None-Match(值为缓存的ETag) ，</li>
+<li>服务端校验资源无变化，则返回304使用本地缓存并更新缓存过期时间，否则返回200和资源。</li>
+</ol>
+<p>有人将http缓存总结为两种<br>缓存类型 获取资源形式 状态码 发送请求到服务器<br>强缓存 从缓存取 200（from cache） 否，直接从缓存取<br>协商缓存 从缓存取 304（Not Modified） 否，通过服务器来告知缓存是否可用</p>
+<p>总的来说，当浏览器加载页面时，缓存机制工作如下<br><img src="/assets/img/http/1.png" alt="流程"></p>
+<p>其中，chrome下F5依然会使用缓存，firefox会发送请求。</p>
+<p>未设置Cache-Control，浏览器有默认使用缓存并且有默认的缓存过期时间，</p>
+<p>根据响应头中2个时间字段 Date 和 Last-Modified 之间的时间差值，取其值的10%作为缓存时间周期。</p>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>缓存能带来性能上的大幅提升，但是也会带来数据同步的问题，如果服务端已经更新了资源但是缓存还没过期，这时会访问不了最新的代码。 因此衍生了一系列禁用缓存的方法。</p>
+<h4 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h4><p>使用前台js或者后台jsp、ejs模板设置<br>添加时间戳参数，最终的url类似 <a href="http://example.com/test.css?t=Date.now(">http://example.com/test.css?t=Date.now(</a>)<br>本质：<br>放弃浏览器缓存，每次都会发送请求获取资源，发送请求时不会带上If-Modified-Since让服务端校验，服务端每次都会响应200并返回资源。<br>Cache-Control:no-store;</p>
+<h4 id="服务器设置"><a href="#服务器设置" class="headerlink" title="服务器设置"></a>服务器设置</h4><p>Cache-Control:no-cache<br>Cache-Control:max-age=0<br>依然使用缓存，但是不管缓存过没过期，都会发送请求。</p>
+<h4 id="添加版本号或hash参数"><a href="#添加版本号或hash参数" class="headerlink" title="添加版本号或hash参数"></a>添加版本号或hash参数</h4><p>缓存带来的问题可以通过合理科学的静态资源管理来避免。<br>添加参数版本号或者hash，形式如下<br>?v=1.2<br>?v=ac15e<br>hash优于版本号，因为有时候内容变化未必版本变化，但是hash始终是跟内容关联在一起的。</p>
+<h4 id="终极方案"><a href="#终极方案" class="headerlink" title="终极方案"></a>终极方案</h4><p>添加hash参数这种方式仍然会带来部署时的一些问题，因为它的本质是覆盖式发布，具体可查看。<br>解决方案是实现非覆盖式发布，让文件的名称与内容相关，也将是将hash值作为文件名的一部分，这样发布的时候新文件不会覆盖旧文件，同时也解决了缓存问题。在今天我们可以通过webpack打包来自动帮我们完成这项功能。</p>
+<h4 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h4><p>CDN是将源站内容分发至最接近用户的节点，使用户可就近取得所需内容，提高用户访问的响应速度和成功率。解决因分布、带宽、服务器性能带来的访问延迟问题，适用于站点加速、点播、直播等场景。<br>全球范围内<em>*为了加速网站的访问</em><br>然网站的访问巨大，但无论在什么地方访问都会感觉速度很快。<br>分布式缓存代理服务器</p>
+<p>http中具有缓存功能的是：1、浏览器缓存、  2、缓存代理服务器。<br>cdn缓存就是在浏览器和服务器间增加的一层缓存<br>。其实 CDN 可以理解成一个普通缓存，如代理缓存（边缘缓存）。<br>当我们按下 Ctrl+F5 时会强制使浏览器忽略本地缓存，但是缓存代理服务</p>
+<p>CDN服务方提供刷新功能</p>
+<p>典型的CDN会要求提供一个源站，当访问资源不存在时自动向源站拉取。<br>距离<br>缓存</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://zhuanlan.zhihu.com/p/24467558">缓存三要素</a><br><a href="https://zhuanlan.zhihu.com/p/25512679">http缓存上</a><br><a href="https://zhuanlan.zhihu.com/p/25596667">http缓存下</a><br><a href="https://www.cnblogs.com/Leo_wl/p/5686610.html">缓存与CDN</a></p>
+
+      
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list">
@@ -218,351 +242,84 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/正则表达式总结/" class="archive-article-date">
-  	<time datetime="2017-11-22T12:13:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/正则表达式总结/">正则表达式总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/一对多sql查询优化/" class="archive-article-date">
-  	<time datetime="2017-11-19T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/一对多sql查询优化/">一对多sql查询</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">用友</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color5">JAVA</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/JAVA动态代理实现机制/" class="archive-article-date">
-  	<time datetime="2017-11-18T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/JAVA动态代理实现机制/">JAVA动态代理实现机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">用友</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color5">JAVA</a>
-        </li>
       
-		</ul>
-	</div>
-
-          
-
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/谈谈arguments/" class="archive-article-date">
-  	<time datetime="2017-11-10T09:42:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/谈谈arguments/">谈谈arguments</a>
-    </h1>
-  
+</div>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
-        </li>
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://realwate.com/http缓存机制/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/js中的排序/" class="archive-article-date">
-  	<time datetime="2017-11-09T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/js中的排序/">js中的排序</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/移动端布局/" class="archive-article-date">
-  	<time datetime="2017-11-05T06:40:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/移动端布局/">移动端布局</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/css像素与viewport/" class="archive-article-date">
-  	<time datetime="2017-11-02T13:17:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/css像素与viewport/">css像素与viewport</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/元素位置大小相关属性/" class="archive-article-date">
-  	<time datetime="2017-11-02T12:16:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/元素位置大小相关属性/">元素位置大小相关属性</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/nginx入门/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
   
+</nav>
 
-    
+
+
+
+
+
+
 
 
           </div>
@@ -601,8 +358,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
