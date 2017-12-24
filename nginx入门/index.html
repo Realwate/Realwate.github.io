@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://realwate.com">
-  <title>Realwate的博客</title>
+  <title>Nginx匹配顺序 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="title: ginx匹配顺序toc: truedate: 2017-12-23 14:03:08tags: [综合]—N尝试使用Nginx部署项目时遇到的顺序匹配问题。">
+  <meta name="description" content="尝试使用Nginx部署项目时遇到的顺序匹配问题。">
+<meta name="keywords" content="综合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Realwate的博客">
+<meta property="og:title" content="Nginx匹配顺序">
 <meta property="og:url" content="http://realwate.com/nginx入门/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="title: ginx匹配顺序toc: truedate: 2017-12-23 14:03:08tags: [综合]—N尝试使用Nginx部署项目时遇到的顺序匹配问题。">
+<meta property="og:description" content="尝试使用Nginx部署项目时遇到的顺序匹配问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-23T07:27:11.558Z">
+<meta property="og:updated_time" content="2017-12-24T12:31:46.808Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="title: ginx匹配顺序toc: truedate: 2017-12-23 14:03:08tags: [综合]—N尝试使用Nginx部署项目时遇到的顺序匹配问题。">
+<meta name="twitter:title" content="Nginx匹配顺序">
+<meta name="twitter:description" content="尝试使用Nginx部署项目时遇到的顺序匹配问题。">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -143,47 +144,100 @@ var _hmt = _hmt || [];
             <article id="post-nginx入门" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx匹配顺序
+    </h1>
+  
+
+        <a href="/nginx入门/" class="archive-article-date">
+  	<time datetime="2017-12-23T06:03:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-23</time>
+</a>
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
 
       <!-- 目录内容 -->
              
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#server"><span class="toc-number">1.</span> <span class="toc-text">server</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#匹配顺序"><span class="toc-number">1.1.</span> <span class="toc-text">匹配顺序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#location"><span class="toc-number">2.</span> <span class="toc-text">location</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#普通-location"><span class="toc-number">2.1.</span> <span class="toc-text">普通 location</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#正则-location"><span class="toc-number">2.2.</span> <span class="toc-text">正则 location</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#匹配顺序-1"><span class="toc-number">2.3.</span> <span class="toc-text">匹配顺序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-pass"><span class="toc-number">3.</span> <span class="toc-text">proxy_pass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
              <!-- 目录内容结束 -->
 
-        <hr>
-<p>title: ginx匹配顺序<br>toc: true<br>date: 2017-12-23 14:03:08<br>tags: [综合]<br>—N<br>尝试使用<code>Nginx</code>部署项目时遇到的顺序匹配问题。<br><a id="more"></a></p>
+        <p>尝试使用<code>Nginx</code>部署项目时遇到的顺序匹配问题。<br><a id="more"></a></p>
 <h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><p>用于设置虚拟主机。</p>
 <h4 id="匹配顺序"><a href="#匹配顺序" class="headerlink" title="匹配顺序"></a>匹配顺序</h4><ol>
-<li>当接受到一个请求时，获取到请求的ip和端口号，根据server块中listen指令的配置，得到满足条件的server</li>
-<li>如果有多个server，才会再次比较server_name</li>
-<li>将请求的Host字段与server_name比较，</li>
-<li>完全匹配(有多个使用第一个)  server_name www.example.com;</li>
-<li>前缀通配符匹配(有多个选最长匹配)  server_name *.example.com;</li>
-<li>后缀通配符匹配   server_name www.example.*</li>
-<li>~正则匹配(有多个选第一个)  server_name ~^(www|host1).*.example.com$;</li>
-<li>使用default_server(没有选第一个server)</li>
+<li>当接受到一个请求时，获取到请求的<code>ip</code>和端口号，根据<code>server</code>块中<code>listen</code>指令的配置，得到满足条件的<code>server</code></li>
+<li>如果有多个<code>server</code>，才会再次比较<code>server_name</code></li>
+<li>将请求的<code>Host</code>字段与<code>server_name</code>比较，</li>
+<li>完全匹配(有多个使用第一个)  <code>server_name www.example.com;</code></li>
+<li>前缀通配符匹配(有多个选最长匹配)  <code>server_name *.example.com;</code></li>
+<li>后缀通配符匹配   <code>server_name www.example.;*</code></li>
+<li><code>~</code>正则匹配(有多个选第一个)  <code>server_name ~^(www|host1).*\.example\.com$;</code></li>
+<li>使用<code>default_server</code>(没有选第一个<code>server</code>)</li>
 </ol>
 <h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><p><code>location</code>可以写在<code>server</code>块或其他<code>location</code>块中，它根据<code>URI</code>来匹配(不包含查询参数)，决定<code>Nginx</code>如何处理请求。<code>location</code>配置的指令会启动不同模块完成工作。</p>
 <h4 id="普通-location"><a href="#普通-location" class="headerlink" title="普通 location"></a>普通 location</h4><p>包括 <code>=</code> (完全匹配)，<code>^~</code>(部分匹配)，没有任何前缀的 <code>/uri/</code>(部分匹配)</p>
-<h4 id="正则-location"><a href="#正则-location" class="headerlink" title="正则 location"></a>正则 location</h4><p>是以<code>~</code>或 <code>~*</code> (大小写不敏感)为前缀的 /uri/ 。</p>
-<h4 id="匹配顺序-1"><a href="#匹配顺序-1" class="headerlink" title="匹配顺序"></a>匹配顺序</h4><ol>
+<h4 id="正则-location"><a href="#正则-location" class="headerlink" title="正则 location"></a>正则 location</h4><p>以<code>~</code>或 <code>~*</code> (大小写不敏感)为前缀。</p>
+<h4 id="匹配顺序-1"><a href="#匹配顺序-1" class="headerlink" title="匹配顺序"></a>匹配顺序</h4><ul>
 <li>检查所有的普通<code>location</code>，如果<code>=</code>完全匹配选择该<code>location</code>块处理请求，停止匹配</li>
-<li>否则检查所有的部分匹配，优先选择最长匹配的结果<br>2.1 如果是<code>^~</code>，<strong>停止匹配</strong><br>2.2 如果是<code>/uri/</code>，记录该前缀匹配，<strong>不停止匹配</strong></li>
-<li>计算正则表达式(~,~*)，选择第一个匹配的</li>
+<li>否则检查所有的部分匹配，优先选择最长匹配的结果<ul>
+<li>如果是<code>^~</code>，<strong>停止匹配</strong></li>
+<li>如果是<code>/uri/</code>，记录该前缀匹配，<strong>不停止匹配</strong></li>
+</ul>
+</li>
+<li>计算正则表达式(<code>~</code>,<code>~*</code>)，选择第一个匹配的</li>
 <li>没有正则匹配，选择之前记录的前缀匹配</li>
-</ol>
-<p><code>^~</code>和<code>/uri/</code>都先于正则计算，但是<code>^~</code>如果匹配直接停止，<code>/uri/</code>要等正则匹配不到，才会匹配自身。</p>
-<p>只有被匹配的那个location块内的指令才能决定如何处理请求，而不会受其他location块影响。但是某些指令却会触发新一轮的<code>location</code>匹配。导致内部重定向的指令有</p>
+</ul>
+<p><code>^~</code>和<code>/uri/</code>都先于正则计算，但是<code>^~</code>匹配到会直接停止，执行该<code>location</code>指令，<code>/uri/</code>要等正则匹配不到才匹配自身。<br>只有被匹配的那个<code>location</code>块内的指令才能决定如何处理请求，而不会受其他<code>location</code>块影响。但是某些指令却会触发新一轮的<code>location</code>匹配。导致内部重定向的指令有</p>
 <ul>
 <li>index</li>
 <li>try_files</li>
 <li>rewrite</li>
 <li>error_page</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">index index.html;</span><br><span class="line"></span><br><span class="line">location = /exact &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">index index.html;</span><br><span class="line">location = /exact &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上配置使用<code>/exact</code>访问最终会跳转到第二个<code>location</code>块.</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms
-                      server">server与location选择算法</a><br><a href="https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html">配置指令顺序</a><br><a href="http://blog.csdn.net/zhongguozhichuang/article/details/52816887">Nginx基本功能</a><br><a href="http://blog.csdn.net/zhangxiao93/article/details/52831658">基本匹配</a></p>
+<h3 id="proxy-pass"><a href="#proxy-pass" class="headerlink" title="proxy_pass"></a>proxy_pass</h3><ul>
+<li>如果<code>proxy_pass</code>指令后面有<code>URI</code>，该<code>URI</code>会先替换掉<code>location</code>匹配的<code>URI</code>，然后再发送到上游服务器。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /name/ &#123;</span><br><span class="line">   proxy_pass http://127.0.0.1/remote/; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>以上配置使用<code>/name/a</code>访问时，上游服务器接受到的<code>URI</code>为<code>/remote/a</code></p>
+<ul>
+<li>如果没有，则原样传递给上游服务器。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /some/path/ &#123;</span><br><span class="line">   proxy_pass http://127.0.0.1; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms">server与location选择算法</a><br><a href="https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html">配置指令顺序</a><br><a href="http://blog.csdn.net/zhongguozhichuang/article/details/52816887">Nginx基本功能</a><br><a href="http://blog.csdn.net/zhangxiao93/article/details/52831658">基本匹配</a></p>
 
       
 
@@ -193,6 +247,17 @@ var _hmt = _hmt || [];
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list">
+			 
+        <li class="article-tag-list-item">
+        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
+        </li>
+      
+		</ul>
+	</div>
+
       
 
       
@@ -257,18 +322,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/http缓存机制/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          http缓存机制
-        
-      </div>
-    </a>
   
-  
-    <a href="/同步github-page/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">同步github-page</div>
+    <a href="/http缓存机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">http缓存机制</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -462,15 +518,15 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="color4">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="color1">javascript</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="color5">html</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="color4">Vue</a>
               </li>
              
               <li class="article-tag-list-item">
