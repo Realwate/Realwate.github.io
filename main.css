@@ -15,6 +15,7 @@
   margin-top: 20px;
   max-height: 350px;
   overflow-y: auto;
+  padding-right: 5px;
 }
 .toc-article {
     z-index: 1000;
@@ -79,7 +80,6 @@
 
 .toc-article .toc-child {
 }
-
 .show-toc-btn {
     display: none;
     z-index: 10;
@@ -94,7 +94,6 @@
     text-align: center;
     background-color: #f9f9f9
 }
-
 .show-toc-btn .btn-bg {
     margin-top: 2px;
     display: block;
@@ -131,3 +130,4 @@
 .toc-article ol, .toc-article ul {
     margin: 10px 0;
 }
+

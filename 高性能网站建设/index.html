@@ -6,22 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>Vue变化侦测机制 | Realwate的博客</title>
+  <title>高性能网站建设 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关于Vue的变化侦测机制，上一篇讲的是不是很全，这里补上。">
-<meta name="keywords" content="前端,Vue">
+  <meta name="description" content="《高性能网站建设指南》、《高性能网站建设进阶指南》是前端必读的两本性能优化指导书籍，本文摘取了其中主要的思想予以总结。">
+<meta name="keywords" content="前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vue变化侦测机制">
-<meta property="og:url" content="https://realwate.com/Vue的变化侦测机制/index.html">
+<meta property="og:title" content="高性能网站建设">
+<meta property="og:url" content="https://realwate.com/高性能网站建设/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="关于Vue的变化侦测机制，上一篇讲的是不是很全，这里补上。">
+<meta property="og:description" content="《高性能网站建设指南》、《高性能网站建设进阶指南》是前端必读的两本性能优化指导书籍，本文摘取了其中主要的思想予以总结。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://realwate.com/assets/img/vue/array_relation.png">
-<meta property="og:updated_time" content="2017-12-05T10:37:29.762Z">
+<meta property="og:image" content="https://realwate.com/assets/img/performance/2.png">
+<meta property="og:image" content="https://realwate.com/assets/img/performance/1.png">
+<meta property="og:updated_time" content="2017-12-28T11:45:12.934Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vue变化侦测机制">
-<meta name="twitter:description" content="关于Vue的变化侦测机制，上一篇讲的是不是很全，这里补上。">
-<meta name="twitter:image" content="https://realwate.com/assets/img/vue/array_relation.png">
+<meta name="twitter:title" content="高性能网站建设">
+<meta name="twitter:description" content="《高性能网站建设指南》、《高性能网站建设进阶指南》是前端必读的两本性能优化指导书籍，本文摘取了其中主要的思想予以总结。">
+<meta name="twitter:image" content="https://realwate.com/assets/img/performance/2.png">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -143,19 +144,19 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Vue的变化侦测机制" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-高性能网站建设" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Vue变化侦测机制
+      高性能网站建设
     </h1>
   
 
-        <a href="/Vue的变化侦测机制/" class="archive-article-date">
-  	<time datetime="2017-07-15T02:11:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-15</time>
+        <a href="/高性能网站建设/" class="archive-article-date">
+  	<time datetime="2017-12-28T10:56:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-28</time>
 </a>
       </header>
     
@@ -175,7 +176,7 @@ var _hmt = _hmt || [];
                        <strong class="toc-title">目录</strong>
                      </div>
                      <div class="toc-content">
-                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setter监听"><span class="toc-number">2.</span> <span class="toc-text">Setter监听</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组处理"><span class="toc-number">3.</span> <span class="toc-text">数组处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他不能解决的方式"><span class="toc-number">4.</span> <span class="toc-text">其他不能解决的方式</span></a></li></ol>
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#减少http请求"><span class="toc-number">1.</span> <span class="toc-text">减少http请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原因"><span class="toc-number">1.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实践"><span class="toc-number">1.2.</span> <span class="toc-text">实践</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用CDN发布静态资源"><span class="toc-number">2.</span> <span class="toc-text">使用CDN发布静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置http缓存"><span class="toc-number">3.</span> <span class="toc-text">设置http缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩-js-和-css"><span class="toc-number">4.</span> <span class="toc-text">压缩 js 和 css</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将css放到head中"><span class="toc-number">5.</span> <span class="toc-text">将css放到head中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js放在底部"><span class="toc-number">6.</span> <span class="toc-text">js放在底部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免重定向"><span class="toc-number">7.</span> <span class="toc-text">避免重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用外链CSS和JS"><span class="toc-number">8.</span> <span class="toc-text">使用外链CSS和JS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#减少DNS支持"><span class="toc-number">9.</span> <span class="toc-text">减少DNS支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩JS代码"><span class="toc-number">10.</span> <span class="toc-text">压缩JS代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置或移除ETag"><span class="toc-number">11.</span> <span class="toc-text">配置或移除ETag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ajax"><span class="toc-number">12.</span> <span class="toc-text">ajax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-WebWorker"><span class="toc-number">13.</span> <span class="toc-text">使用 WebWorker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片优化"><span class="toc-number">14.</span> <span class="toc-text">图片优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS选择器优化"><span class="toc-number">15.</span> <span class="toc-text">CSS选择器优化</span></a></li></ol>
                      </div>
                   </div>
                 </div>
@@ -196,26 +197,41 @@ var _hmt = _hmt || [];
              
              <!-- 目录内容结束 -->
 
-        <p>关于Vue的变化侦测机制，上一篇讲的是不是很全，这里补上。<br><a id="more"></a></p>
-<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>我们知道，<code>Vue</code>是通过属性的<code>getter</code>来收集依赖，一旦属性变化则触发<code>Watcher</code>的<code>update</code>，而这里面就涉及到了如何侦测数据变化的问题。针对多种更新数据的方式，我们必须确保在每一种情况下都能监测到数据的变化，从而正确的更新视图或者触发回调。让我们看看<code>Vue</code>是怎么做的。</p>
-<h3 id="Setter监听"><a href="#Setter监听" class="headerlink" title="Setter监听"></a>Setter监听</h3><p>通过诸如 <code>a = xxx</code> 这样直接赋值的方式会触发属性的<code>setter</code>， 而这正是<code>Vue</code>最基本也是最通用的监听数据变化的方式。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">defineReactive$$1</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  obj,</span></span></span><br><span class="line"><span class="function"><span class="params">  key,</span></span></span><br><span class="line"><span class="function"><span class="params">  val,</span></span></span><br><span class="line"><span class="function"><span class="params">  customSetter</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="comment">/*  ... */</span></span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span><br><span class="line">  <span class="comment">/* ....  */</span></span><br><span class="line">    set: <span class="function"><span class="keyword">function</span> <span class="title">reactiveSetter</span> (<span class="params">newVal</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> value = getter ? getter.call(obj) : val;</span><br><span class="line">      <span class="keyword">if</span> (newVal === value || (newVal !== newVal &amp;&amp; value !== value)) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (<span class="string">"development"</span> !== <span class="string">'production'</span> &amp;&amp; customSetter) &#123;</span><br><span class="line">        customSetter();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (setter) &#123;</span><br><span class="line">        setter.call(obj, newVal);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        val = newVal;</span><br><span class="line">      &#125;</span><br><span class="line">      childOb = observe(newVal);</span><br><span class="line">      dep.notify();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在源码中，我们可以看到，触发setter后，会调用observe()方法递归的重定义成响应式属性，同时更新本地闭包中的childOb引用，然后dep.notify，dep负责维护getter收集到的所有的依赖，notify会通知所有的Watcher触发更新，当然为了性能，Watcher是会放在一个队列中异步执行的。</p>
-<h3 id="数组处理"><a href="#数组处理" class="headerlink" title="数组处理"></a>数组处理</h3><p>通过setter看起来似乎能检测到所有数据的更新，但是在一些情况下，我们完全可能在不触发setter的情况下改变数据，比如数组的 push、pop、shift等方法。因此，<code>Vue</code>中对数组做了特殊处理。<br>在调用observe时，会给每个属性定义唯一的Observer<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Observer = <span class="function"><span class="keyword">function</span> <span class="title">Observer</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.value = value;</span><br><span class="line">  <span class="keyword">this</span>.dep = <span class="keyword">new</span> Dep();</span><br><span class="line">  <span class="keyword">this</span>.vmCount = <span class="number">0</span>;</span><br><span class="line">  def(value, <span class="string">'__ob__'</span>, <span class="keyword">this</span>);</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</span><br><span class="line">    <span class="keyword">var</span> augment = hasProto</span><br><span class="line">      ? protoAugment</span><br><span class="line">      : copyAugment;</span><br><span class="line">    augment(value, arrayMethods, arrayKeys);</span><br><span class="line">    <span class="keyword">this</span>.observeArray(value);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.walk(value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>其中，如果是数组类型，会做特殊处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var augment = hasProto</span><br><span class="line">      ? protoAugment</span><br><span class="line">      : copyAugment;</span><br><span class="line">    augment(value, arrayMethods, arrayKeys);</span><br></pre></td></tr></table></figure></p>
-<p>这里的arrayMethods是通过Object.create方法构造的，它继承了Array.prototype中的方法，同时重写了 ‘push’ ‘pop’,等几个方法。<br>其实这就是用JS原型继承的方式 实现了传统OOP语言 例如Java中 extends、override 的效果。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrayProto = <span class="built_in">Array</span>.prototype;</span><br><span class="line"><span class="keyword">var</span> arrayMethods = <span class="built_in">Object</span>.create(arrayProto);[</span><br><span class="line">  <span class="string">'push'</span>,</span><br><span class="line">  <span class="string">'pop'</span>,</span><br><span class="line">  <span class="string">'shift'</span>,</span><br><span class="line">  <span class="string">'unshift'</span>,</span><br><span class="line">  <span class="string">'splice'</span>,</span><br><span class="line">  <span class="string">'sort'</span>,</span><br><span class="line">  <span class="string">'reverse'</span></span><br><span class="line">]</span><br><span class="line">.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">method</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// cache original method</span></span><br><span class="line">  <span class="keyword">var</span> original = arrayProto[method];</span><br><span class="line">  def(arrayMethods, method, <span class="function"><span class="keyword">function</span> <span class="title">mutator</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">arguments</span>$<span class="number">1</span> = <span class="built_in">arguments</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// avoid leaking arguments:</span></span><br><span class="line">    <span class="comment">// http://jsperf.com/closure-with-arguments</span></span><br><span class="line">    <span class="keyword">var</span> i = <span class="built_in">arguments</span>.length;</span><br><span class="line">    <span class="keyword">var</span> args = <span class="keyword">new</span> <span class="built_in">Array</span>(i);</span><br><span class="line">    <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">      args[i] = <span class="built_in">arguments</span>$<span class="number">1</span>[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> result = original.apply(<span class="keyword">this</span>, args);</span><br><span class="line">    <span class="keyword">var</span> ob = <span class="keyword">this</span>.__ob__;</span><br><span class="line">    <span class="keyword">var</span> inserted;</span><br><span class="line">    <span class="keyword">switch</span> (method) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">'push'</span>:</span><br><span class="line">        inserted = args;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'unshift'</span>:</span><br><span class="line">        inserted = args;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> <span class="string">'splice'</span>:</span><br><span class="line">        inserted = args.slice(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (inserted) &#123; ob.observeArray(inserted); &#125;</span><br><span class="line">    <span class="comment">// notify change</span></span><br><span class="line">    ob.dep.notify();</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>然后 hasProto会检测有没有<strong>proto</strong>这个属性，有的话直接将数组的<strong>proto</strong><br>指向arrayMethods，相当于间接继承了Array.prototype，形成如下关系：<br><img src="/assets/img/vue/array_relation.png" alt="效果"></p>
-<p>这样原有的数组方法不会丢失，同时实现了自己定义的push、pop等方法，用于侦测变化。</p>
-<p>如果没有的话 也会调用Object.defineproperty在数组对象上重定义这几个方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">protoAugment</span> (<span class="params">target, src</span>) </span>&#123;</span><br><span class="line">  target.__proto__ = src;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copyAugment</span> (<span class="params">target, src, keys</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = keys.length; i &lt; l; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> key = keys[i];</span><br><span class="line">    def(target, key, src[key]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="其他不能解决的方式"><a href="#其他不能解决的方式" class="headerlink" title="其他不能解决的方式"></a>其他不能解决的方式</h3><p>在另一些情况下，受限于Javascript这门语言的限制，还是会出现无法检测变化的问题。<br>例如假设我们初始定义<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data = &#123; </span><br><span class="line">  name: <span class="string">"xxx"</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>然后在某个时候，我们添加age属性 data.age = 18; 以期望视图中跟age绑定的部分更新。当然，结果是令人失望的，视图不会有任何变化。原因在<code>Vue</code>的文档上也提到了</p>
-<blockquote>
-<p>受现代 JavaScript 的限制（以及废弃 Object.observe），Vue 不能检测到对象属性的添加或删除。由于 Vue 会在初始化实例时对属性执行 getter/setter 转化过程，所以属性必须在 data 对象上存在才能让 Vue 转换它，这样才能让它是响应的</p>
-</blockquote>
-<p>同时也给出了解决方案</p>
-<blockquote>
-<p>Vue 不允许在已经创建的实例上动态添加新的根级响应式属性(root-level reactive property)。然而它可以使用 Vue.set(object, key, value) 方法将响应属性添加到嵌套的对象上：</p>
-</blockquote>
+        <p>《高性能网站建设指南》、《高性能网站建设进阶指南》是前端必读的两本性能优化指导书籍，本文摘取了其中主要的思想予以总结。<a id="more"></a></p>
+<h3 id="减少http请求"><a href="#减少http请求" class="headerlink" title="减少http请求"></a>减少http请求</h3><h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ol>
+<li><code>http</code>请求响应都要经过网络传输，这会带来时间上的开销。</li>
+<li><code>http1.1</code>协议问题。浏览器针对同一域名下建立的<code>TCP</code>连接有数量限制(chrome下为6个)，且在同一<code>TCP</code>连接上只能串行发送(前一个请求没返回不能继续发送)，超过限制数目的请求会被阻塞，存在线头阻塞问题。</li>
+</ol>
+<p>PS:<code>http2.0</code>协议解决了这个问题，它是真正的多路复用，使用一个<code>TCP</code>连接，实现多流并行而不用依赖多个<code>TCP</code> 连接，实现真正并发。</p>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><ol>
+<li>将多张图片合并成雪碧图</li>
+<li>使用data:URL</li>
+<li>css、js文件合并</li>
+</ol>
+<h3 id="使用CDN发布静态资源"><a href="#使用CDN发布静态资源" class="headerlink" title="使用CDN发布静态资源"></a>使用CDN发布静态资源</h3><p><code>CDN</code>可以理解为分布式的代理缓存，能在全球范围内加速网站的访问，避免传输距离带来的影响。</p>
+<h3 id="设置http缓存"><a href="#设置http缓存" class="headerlink" title="设置http缓存"></a>设置http缓存</h3><p>充分利用<code>http</code>的缓存机制，对静态资源设置合理的缓存时间。具体可查看我的另一篇<a href="/http%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/">文章</a></p>
+<h3 id="压缩-js-和-css"><a href="#压缩-js-和-css" class="headerlink" title="压缩 js 和 css"></a>压缩 js 和 css</h3><p>开启服务端压缩，使用<code>gzip</code>压缩文本内容通常能将响应数据量减少 <code>70%</code>。添加响应头 <code>vary: Accept-Encoding</code>让代理缓存同时缓存压缩版本和非压缩版本，或者 <code>Cache-Control: private</code> 禁止代理缓存</p>
+<h3 id="将css放到head中"><a href="#将css放到head中" class="headerlink" title="将css放到head中"></a>将css放到head中</h3><p>涉及到浏览器的渲染机制，如果在加载<code>css</code>的情况下渲染页面，那么等到<code>css</code>加载完成后再次渲染会使得页面闪烁，这就是<code>FOUC</code>(无样式内容的闪烁，Flash of Unstyled Cotnent)。<br><code>FOUC</code>的处理方式依赖于具体的浏览器，有的会尽量避免<code>FOUC</code>，这种浏览器如果将<code>css</code>放到底部，只要<code>css</code>未加载完成，页面会一直白屏。<br>总的来说，将<code>css</code>放到<code>head</code>中，能同时避免白屏和<code>FOUC</code>。暂时不需要的<code>CSS</code>可以通过<code>js</code>异步动态的加载进来。</p>
+<h3 id="js放在底部"><a href="#js放在底部" class="headerlink" title="js放在底部"></a>js放在底部</h3><ol>
+<li><code>js</code>会阻塞<code>DOM</code>树的构建，因此在头部放置<code>script</code>会阻塞页面的渲染，使得页面白屏</li>
+<li><code>js</code>会阻塞其他资源的下载<br>原因都是因为<code>js</code>中可能会使用<code>document.write</code>等<code>DOM API</code>改变页面。对于第二条，我做了以下实验。在现代浏览器(chrome63.0,firefox57.0)上，有以下代码<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"block.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="comment">&lt;!-- 这是一段执行时间&gt;15s的脚本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"hello.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"./style.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./1.png"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./2.png"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>网络请求结果分别如下<br><img src="/assets/img/performance/2.png" alt="firefox"><br><img src="/assets/img/performance/1.png" alt="chrome"></p>
+<p>现代浏览器做了预解析的优化，在执行<code>js</code>代码时，<code>firefox</code>下会并行下载<code>js</code>脚本 但是最终保证<code>js</code>按顺序执行，<code>chrome</code>和<code>firefox</code>在执行<code>js</code>时都不会阻塞<code>css</code>,图片资源都会被阻塞。<br>总的来说，<code>js</code>执行确实会阻塞部分资源的下载，具体是哪些资源依赖浏览器的策略。</p>
+<h3 id="避免重定向"><a href="#避免重定向" class="headerlink" title="避免重定向"></a>避免重定向</h3><p>重定向分为301永久 ，302临时重定向。多次的重定向操作等于多次<code>http</code>请求，带来传输和解析开销，应尽量避免使用，改用其他方式。</p>
+<h3 id="使用外链CSS和JS"><a href="#使用外链CSS和JS" class="headerlink" title="使用外链CSS和JS"></a>使用外链CSS和JS</h3><ol>
+<li>利于组件的重用</li>
+<li>可利用浏览器缓存</li>
+<li>但同时外链链接应该尽量少(遵循第一条，合并css，js代码)</li>
+</ol>
+<h3 id="减少DNS支持"><a href="#减少DNS支持" class="headerlink" title="减少DNS支持"></a>减少DNS支持</h3><p>DNS解析也会带来时间开销，页面应引用较少的域名，服务器支持Keep-Alive，尽量复用TCP连接。</p>
+<h3 id="压缩JS代码"><a href="#压缩JS代码" class="headerlink" title="压缩JS代码"></a>压缩JS代码</h3><p>使用<code>UglifyJS</code>等工具，在不改变<code>js</code>语义的情况下，精简代码，减少代码体积。配合<code>gzip</code>能进一步压缩。</p>
+<h3 id="配置或移除ETag"><a href="#配置或移除ETag" class="headerlink" title="配置或移除ETag"></a>配置或移除ETag</h3><p><code>ETag</code>用于缓存的再次验证。但是在集群服务器下，会存在<code>ETag</code>不一致的问题，默认的<code>ETag</code>生成策略依赖于具体的服务器 如 <code>IIS</code>和<code>Apache</code>不同。这样即使内容没变化，因为服务器的问题，导致服务器再校验时<code>ETag</code>不一致返回多余的响应体。要么移除 <code>ETag</code> ， 只使用<code>Last-Modified</code>，要么对<code>ETag</code>进行相应的配置。</p>
+<h3 id="ajax"><a href="#ajax" class="headerlink" title="ajax"></a>ajax</h3><p>根据具体的业务可对<code>ajax</code>响应设置缓存，响应的个性化通过查询字符串区别</p>
+<h3 id="使用-WebWorker"><a href="#使用-WebWorker" class="headerlink" title="使用 WebWorker"></a>使用 WebWorker</h3><p>对于大量计算放到<code>WebWorker</code>中，避免阻塞渲染。</p>
+<h3 id="图片优化"><a href="#图片优化" class="headerlink" title="图片优化"></a>图片优化</h3><p>使用压缩工具，在不损失图片清晰度的情况下对图片压缩。使用体积更小的<code>webp</code>格式。</p>
+<h3 id="CSS选择器优化"><a href="#CSS选择器优化" class="headerlink" title="CSS选择器优化"></a>CSS选择器优化</h3><p>选择器遵循从右向左的匹配规则，只要左边还有其它选择符，会一直向左移动，直到不匹配。因此最右边的选择符成为为关键选择器，避免它匹配大量元素的情况。如  <code>.bg *{ }</code></p>
 
       
 
@@ -231,10 +247,6 @@ var _hmt = _hmt || [];
 			 
         <li class="article-tag-list-item">
         	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">Vue</a>
         </li>
       
 		</ul>
@@ -290,7 +302,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/Vue的变化侦测机制/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/高性能网站建设/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -304,18 +316,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/大数据量表格渲染/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          大数据量表格渲染
-        
-      </div>
-    </a>
   
-  
-    <a href="/Vue数据绑定浅析/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Vue数据绑定浅析</div>
+    <a href="/nginx入门/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Nginx匹配顺序</div>
       <i class="icon-circle-right"></i>
     </a>
   
