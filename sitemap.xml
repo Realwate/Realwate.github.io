@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://realwate.com/%E7%90%86%E8%A7%A3async-await/</loc>
+    
+    <lastmod>2018-02-08T13:42:58.556Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://realwate.com/JWT%E7%90%86%E8%A7%A3/</loc>
+    
+    <lastmod>2018-02-06T11:19:28.444Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://realwate.com/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BD%91%E7%AB%99%E5%BB%BA%E8%AE%BE/</loc>
     
     <lastmod>2017-12-28T11:45:12.934Z</lastmod>
@@ -327,13 +341,6 @@
     <loc>https://realwate.com/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B8%83%E5%B1%80/</loc>
     
     <lastmod>2017-12-05T10:37:29.373Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://realwate.com/JWT%E7%90%86%E8%A7%A3/</loc>
-    
-    <lastmod>2017-12-05T10:37:29.355Z</lastmod>
     
   </url>
   
