@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>Archives | Realwate的博客</title>
+  <title>数据库并发问题 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天流若水Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Realwate的博客">
-<meta property="og:url" content="https://realwate.com/archives/page/5/index.html">
+  <meta name="description" content="毕业设计过程中使用到了Redis，在多进程情况下访问Redis时，需要watch,multi exec来配合保证不会有多个进程操作同一数据，想知道传统数据库在面对并发时是如何工作的，于是有了这篇记录。">
+<meta name="keywords" content="综合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库并发问题">
+<meta property="og:url" content="https://realwate.com/数据库事务/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="天流若水Blog">
+<meta property="og:description" content="毕业设计过程中使用到了Redis，在多进程情况下访问Redis时，需要watch,multi exec来配合保证不会有多个进程操作同一数据，想知道传统数据库在面对并发时是如何工作的，于是有了这篇记录。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-16T07:17:00.790Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="天流若水Blog">
+<meta name="twitter:title" content="数据库并发问题">
+<meta name="twitter:description" content="毕业设计过程中使用到了Redis，在多进程情况下访问Redis时，需要watch,multi exec来配合保证不会有多个进程操作同一数据，想知道传统数据库在面对并发时是如何工作的，于是有了这篇记录。">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -139,154 +141,145 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-数据库事务" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/doctype作用/" class="archive-article-date">
-  	<time datetime="2017-03-11T13:21:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-11</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/doctype作用/">doctype作用</a>
+    <h1 class="article-title" itemprop="name">
+      数据库并发问题
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color5">html</a>
-        </li>
-      
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/使用MongoDB/" class="archive-article-date">
-  	<time datetime="2017-03-10T11:41:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
+        <a href="/数据库事务/" class="archive-article-date">
+  	<time datetime="2018-02-15T12:23:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-15</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/使用MongoDB/">使用MongoDB</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">教程</a>
-        </li>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
       
-		</ul>
-	</div>
 
-          
+      <!-- 目录内容 -->
+             
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#事务"><span class="toc-number">1.</span> <span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性质"><span class="toc-number">1.2.</span> <span class="toc-text">性质</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隔离性与并发"><span class="toc-number">2.</span> <span class="toc-text">隔离性与并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事务隔离等级"><span class="toc-number">3.</span> <span class="toc-text">事务隔离等级</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#术语"><span class="toc-number">3.1.</span> <span class="toc-text">术语</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定义-1"><span class="toc-number">3.2.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#幻读与不可重读区别"><span class="toc-number">3.3.</span> <span class="toc-text">幻读与不可重读区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DBMS实现差异"><span class="toc-number">3.4.</span> <span class="toc-text">DBMS实现差异</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL中的并发事务"><span class="toc-number">4.</span> <span class="toc-text">MySQL中的并发事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MVCC"><span class="toc-number">4.1.</span> <span class="toc-text">MVCC</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Read-Committed"><span class="toc-number">4.1.1.</span> <span class="toc-text">Read Committed</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Repeatable-Read"><span class="toc-number">4.1.2.</span> <span class="toc-text">Repeatable Read</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#write-skew"><span class="toc-number">4.1.3.</span> <span class="toc-text">write skew</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#乐观锁"><span class="toc-number">4.1.4.</span> <span class="toc-text">乐观锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#悲观锁"><span class="toc-number">4.1.5.</span> <span class="toc-text">悲观锁</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#悲观锁机制"><span class="toc-number">4.2.</span> <span class="toc-text">悲观锁机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#共享锁"><span class="toc-number">4.2.1.</span> <span class="toc-text">共享锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#排他锁"><span class="toc-number">4.2.2.</span> <span class="toc-text">排他锁</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#锁的范围"><span class="toc-number">4.2.3.</span> <span class="toc-text">锁的范围</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Next-Key-Lock"><span class="toc-number">4.2.4.</span> <span class="toc-text">Next-Key Lock</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-number">4.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis中的事务"><span class="toc-number">5.</span> <span class="toc-text">Redis中的事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
+             <!-- 目录内容结束 -->
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/git整理/" class="archive-article-date">
-  	<time datetime="2017-03-10T10:09:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/git整理/">git整理</a>
-    </h1>
-  
+        <p>毕业设计过程中使用到了<code>Redis</code>，在多进程情况下访问<code>Redis</code>时，需要<code>watch</code>,<code>multi exec</code>来配合保证不会有多个进程操作同一数据，想知道传统数据库在面对并发时是如何工作的，于是有了这篇记录。<br><a id="more"></a></p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>一个事务表示将一组连续的数据库操作，放在一个单一的工作单元来执行。在<code>AUTO COMMIT</code>模式下，每条 <code>SQL</code> 语句作为独立的事务。手工 <code>Commit</code>下，多条<code>SQL</code>构成一个事务，这样才能满足一些应用场景，比如在人员管理系统中删除一个人员，既要删除人员的基本资料，也要删除和该人员相关的信息，如信箱，文章等等。</p>
+<h4 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h4><p>一般事务是必须满足4个条件（ACID）：Atomicity（原子性）、Consistency（一致性）、Isolation（隔离性）、Durability（可靠性）</p>
+<ul>
+<li>原子性：确保事务内的所有操作都成功完成，否则事务将回滚到以前的状态</li>
+<li>一致性：在事务开始和完成时，数据都必须保持一致状态。</li>
+<li>隔离性：数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。这意味着事务处理过程中的中间状态对外部是不可见的，</li>
+<li>持久性：事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。</li>
+</ul>
+<h3 id="隔离性与并发"><a href="#隔离性与并发" class="headerlink" title="隔离性与并发"></a>隔离性与并发</h3><p>事务的隔离性与并发能力是相互影响的，在最高隔离等级下，事务与事务之间互不影响，<strong>具备强一致性，读操作可以立即读到提交的更新操作</strong>，事务的执行是串行的，虽然保证了数据的安全性，但是数据库资源的利用率下降，难以支撑多用户。在应用中，我们要根据实际情况在并发能力与数据库隔离级别中做取舍，比如许多应用对“不可重复读”和“幻读”并不敏感，我们可以牺牲一定程度的数据一致性来提高数据库系统事务的并发能力。</p>
+<h3 id="事务隔离等级"><a href="#事务隔离等级" class="headerlink" title="事务隔离等级"></a>事务隔离等级</h3><h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><ul>
+<li>读锁。也叫共享锁，它阻塞写不阻塞读</li>
+<li>写锁。也叫排他锁，它同时阻塞读和写</li>
+<li>长期锁。到事务结束才释放的锁 </li>
+<li>短期锁。在事务中，对相关数据操作完成就立刻释放的锁</li>
+</ul>
+<h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h4><p>SQL92标准定义了4个事务隔离级别，<strong>每个隔离等级都解决了上一层隔离等级的问题</strong>。</p>
+<ul>
+<li><strong>P0.Dirty Write</strong>(脏写).没有任何锁机制，<strong>事务没commit时</strong>，针对同一条数据，事务t1先<code>update</code>，事务t2再<code>update</code>，t2覆盖t1产生脏写。不属于标准。</li>
+<li><p><strong>P1.Read Uncommitted</strong>(读未提交).加上长期写锁解决脏写，使得<strong>针对同一条数据的两个事务写操作互斥</strong>，解决了<code>dirty write</code>，现在的DBMS最低隔离等级一般都是这个。<br>问题：事务t1能读(select)到事务t2中<strong>没commit的数据</strong>，此时若t2回滚，t1读到的数据就是错误的，形成脏读。如图所示。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">             t1                     t2</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SET</span> autocommit=<span class="number">0</span>;      <span class="keyword">SET</span> autocommit=<span class="number">0</span>;</span><br><span class="line">time</span><br><span class="line">|          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">|          empty <span class="keyword">set</span></span><br><span class="line">|                                 <span class="keyword">INSERT</span> <span class="keyword">INTO</span> t <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">v   </span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t; <span class="comment">--脏读</span></span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">           |    1    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>P2.Read Committed</strong>(读已提交).使用长期写锁和短期读锁，使得<strong>只有写操作的事务执行完毕才能读</strong>，解决了<code>dirty read</code>。这是大多数数据库默认的隔离级别。<br>问题：同一条数据，事务t1先查询一次，事务t2更新数据并提交，事务t2再查询的结果与第一次不一致，出现不可重读。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">             t1                     t2</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SET</span> autocommit=<span class="number">0</span>;      <span class="keyword">SET</span> autocommit=<span class="number">0</span>;</span><br><span class="line">time</span><br><span class="line">|          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t <span class="keyword">where</span> b=<span class="number">2</span>;</span><br><span class="line">|          <span class="comment">---------------------</span></span><br><span class="line">           |    1    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">|                                 <span class="keyword">UPDATE</span> <span class="keyword">test</span> <span class="keyword">SET</span> a=<span class="number">2</span> <span class="keyword">where</span> b=<span class="number">2</span>;</span><br><span class="line">v </span><br><span class="line">                                  <span class="keyword">COMMIT</span>;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t <span class="keyword">where</span> b=<span class="number">2</span>; <span class="comment">--两次读取结果不一致</span></span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">           |    2    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>P3.Repeatable-Read</strong>(可重复读).使用长期写锁和长期读锁，可以解决不可重读。<br>问题：出现幻读</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">             t1                     t2</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SET</span> autocommit=<span class="number">0</span>;      <span class="keyword">SET</span> autocommit=<span class="number">0</span>;</span><br><span class="line">time</span><br><span class="line">|          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">|          empty <span class="keyword">set</span></span><br><span class="line">|                                 <span class="keyword">INSERT</span> <span class="keyword">INTO</span> t <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">v </span><br><span class="line">                                  <span class="keyword">COMMIT</span>;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t; <span class="comment">--本不存在的数据又出现了</span></span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">           |    1    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>P4.serializable</strong>(序列化).锁住你要操作的整个表的数据，如果另一个进程事务想要操作表里的任何数据就需要等待锁释放。使得操作同一数据的事务串行进行，解决了所有问题。</p>
+</li>
+</ul>
+<h4 id="幻读与不可重读区别"><a href="#幻读与不可重读区别" class="headerlink" title="幻读与不可重读区别"></a>幻读与不可重读区别</h4><p>不可重读指的是</p>
+<ol>
+<li><code>t1</code> 读取一条数据</li>
+<li><code>t2</code> 更新同一条数据</li>
+<li><code>t1</code> 再次<code>select</code>，<strong>同一条数据</strong>发生了变化。</li>
+</ol>
+<p>幻读指的是</p>
+<ol>
+<li><code>t1</code> 读取 (select where) </li>
+<li><code>t2</code> 执行了<strong>和t1 where条件集合有交集的插入或删除操作</strong></li>
+<li><code>t1</code> 再次<code>select</code>，<strong>本来存在的数据消失了</strong>，仿佛是幻影一样。</li>
+</ol>
+<h4 id="DBMS实现差异"><a href="#DBMS实现差异" class="headerlink" title="DBMS实现差异"></a>DBMS实现差异</h4><p>SQL92事务隔离级别的定义用于描述<strong>基于锁实现的并发控制</strong>，但是现在的DBMS基本都基于 MVCC (多版本并发控制)实现，<strong>它们的事务隔离级别与标准有所差别，并且不同的DBMS对于事务隔离级别的定义和实现也不一样。</strong><br><code>Oracle</code>只提供<code>Read committed</code>和<code>Serializable</code>两个标准级别，另外还自己定义了<code>Read only</code>隔离级别。<code>MySQL</code>支持全部4个隔离级别，但在具体实现时，一些隔离级下是采用MVCC一致性读，但某些情况又不是。</p>
+<h3 id="MySQL中的并发事务"><a href="#MySQL中的并发事务" class="headerlink" title="MySQL中的并发事务"></a>MySQL中的并发事务</h3><p>我们使用的版本为<code>MySQL5.6/innoDB</code>。</p>
+<h4 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h4><p>MVCC，即多版本并发控制，是一种与传统锁机制有区别的一种控制并发的方法。它的原理是这样的：<br>对于同一条数据有多个版本，我们每次读的都是这个数据的历史版本(一个快照)，而写操作则是针对最新版本，这样读写的版本不同自然使得读写不冲突(<strong>写和写仍会冲突，因为写操作还是通过长期写锁来控制并发</strong>)。因此可以很大程度上提升性能。<br>MySQL中的MVCC作用于<code>Read Committed</code> 和 <code>Repeatable Read</code>。</p>
+<h5 id="Read-Committed"><a href="#Read-Committed" class="headerlink" title="Read Committed"></a>Read Committed</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">             t1                     t2</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SET</span> autocommit=<span class="number">0</span>;      <span class="keyword">SET</span> autocommit=<span class="number">0</span>;</span><br><span class="line">           </span><br><span class="line">time      <span class="comment">--t1事务刚开始的初始版本为空</span></span><br><span class="line">|          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">|          empty <span class="keyword">set</span></span><br><span class="line">|                                 <span class="keyword">INSERT</span> <span class="keyword">INTO</span> t <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">|          <span class="comment">--MVCC 读取不会被写阻塞 </span></span><br><span class="line">v          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">           empty <span class="keyword">set</span></span><br><span class="line">                                  <span class="keyword">COMMIT</span>;</span><br><span class="line">           <span class="comment">--出现幻读(也会出现不可重读)</span></span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">           |    1    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br></pre></td></tr></table></figure>
+<p>在<code>Read Committed</code>级别下，每次<code>select</code>会取最近的版本快照，MVCC的作用<strong>仅是读写不冲突，会出现不可重读、幻读</strong>。</p>
+<h5 id="Repeatable-Read"><a href="#Repeatable-Read" class="headerlink" title="Repeatable Read"></a>Repeatable Read</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">             t1                     t2</span><br><span class="line"></span><br><span class="line">           <span class="keyword">SET</span> autocommit=<span class="number">0</span>;      <span class="keyword">SET</span> autocommit=<span class="number">0</span>;</span><br><span class="line">           </span><br><span class="line">time      <span class="comment">--t1事务刚开始的初始版本为空</span></span><br><span class="line">|          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">|          empty <span class="keyword">set</span></span><br><span class="line">|                                 <span class="keyword">INSERT</span> <span class="keyword">INTO</span> t <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">|          <span class="comment">--读取不会被写阻塞 </span></span><br><span class="line">v          <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">           empty <span class="keyword">set</span></span><br><span class="line">                                  <span class="keyword">COMMIT</span>;</span><br><span class="line">      <span class="comment">--读取到的还是初始版本 不会幻读</span></span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">           empty <span class="keyword">set</span></span><br><span class="line"></span><br><span class="line">           <span class="keyword">COMMIT</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">--事务提交之后读取正常</span></span><br><span class="line">           <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t;</span><br><span class="line">           <span class="comment">---------------------</span></span><br><span class="line">           |    1    |    2    |</span><br><span class="line">           <span class="comment">---------------------</span></span><br></pre></td></tr></table></figure>
+<p>在<code>Repeatable-Read</code>级别下，事务开启时我们会看到一个最近的版本，<strong>之后的select都会基于这个历史版本</strong>。MVCC使得读写不阻塞，并且不会出现幻读，可重读。这也是MySQL的默认隔离级别。</p>
+<h5 id="write-skew"><a href="#write-skew" class="headerlink" title="write skew"></a>write skew</h5><p>虽然<code>Repeatable Read</code>模式下不会出现幻读，但是仍然有这样一种问题。</p>
+<ol>
+<li><code>t1</code>,<code>t2</code>同时查询<code>user</code>表中的某个用户，发现不存在</li>
+<li><code>t1</code>提交这一用户数据</li>
+<li><code>t2</code>再次提交重复数据，出现冲突</li>
+</ol>
+<p>这种现象称为<code>write skew</code>，也有人把他归为幻读的一种。<br>基于<code>MVCC</code>的普通<code>select</code>无法实现这种需求，因为它读取的始终是一个<code>snapshoot</code>，而我们需要读取到指定记录的最新值。这可以用锁完成。</p>
+<h5 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h5><p>乐观锁认为更新冲突是几乎不会发生的，当发生冲突时便会阻碍，返回错误信息，让用户决定重新开启事务还是放弃。乐观锁的实现一般是应用程序级别的，数据库里很少提供这种实现。它的原理是为数据添加版本标识，每次修改记录都会更新版本号。这样读取数据时获得一个版本，如果保存时的版本与数据库中的版本不一致，说明有其他事务修改过了。由版本号保证我们读取到的是最新值。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> <span class="keyword">test</span> <span class="keyword">set</span> <span class="keyword">version</span>=<span class="keyword">version</span>+<span class="number">1</span> <span class="keyword">where</span> <span class="keyword">id</span>=#&#123;<span class="keyword">id</span>&#125; <span class="keyword">and</span> <span class="keyword">version</span>=#&#123;<span class="keyword">version</span>&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>在以上SQL中，我们通过<code>set version=version+1</code>保证<code>version</code>的递增是原子性的，在<code>where</code>条件后添加<code>version=version</code>，只有返回的更新记录大于0才表示没有冲突，更新成功。</p>
+<p>PS:<code>PgSQL</code>内置有乐观锁控制并发， <code>Repeatable Read</code>级别下出现更新冲突会抛出异常<br><code>ERROR:  could not serialize access due to concurrent update</code></p>
+<h5 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h5><p>由<code>select + 关键字</code>完成，可以手动添加长期共享锁，长期排他锁，具体下文有说明。</p>
+<h4 id="悲观锁机制"><a href="#悲观锁机制" class="headerlink" title="悲观锁机制"></a>悲观锁机制</h4><p><code>Mysql</code>对于写操作会自动加上长期写锁，对于读操作使用MVCC不加锁。针对<code>select</code>，我们可以选择手动加锁，但是要注意加锁逻辑，避免死锁。</p>
+<h5 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... where... <span class="keyword">LOCK</span> <span class="keyword">IN</span> <span class="keyword">SHARE</span> <span class="keyword">MODE</span>;</span><br></pre></td></tr></table></figure>
+<p><code>select</code>加上共享锁(读锁)，会被写阻塞(普通<code>select</code>不会)，事务完成(commit or rollback)后释放，相当于长期共享锁。</p>
+<h5 id="排他锁"><a href="#排他锁" class="headerlink" title="排他锁"></a>排他锁</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... where... <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+<p><code>select</code>加上排他锁(写锁)，会阻塞读写，事务完成后释放，相当于长期排他锁。</p>
+<h5 id="锁的范围"><a href="#锁的范围" class="headerlink" title="锁的范围"></a>锁的范围</h5><p>InnoDB有表锁和行锁，行锁是通过索引上的索引项来实现的，所以<strong>只有通过索引条件(where条件)检索数据，才会使用行级锁</strong>，否则将使用表锁！</p>
+<h5 id="Next-Key-Lock"><a href="#Next-Key-Lock" class="headerlink" title="Next-Key Lock"></a>Next-Key Lock</h5><p><code>Repeatable Read</code>级别下，使用了锁的<code>select</code>通过<code>Next-Key Lock</code>避免了幻读，它会对<code>where</code>查询范围(不论该范围是否存在表中)进行加锁。<br>很显然，在使用范围条件检索并锁定记录时，会阻塞符合条件范围内键值的并发插入，影响到数据库的性能。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在<code>MySQL</code>中，两个并发的事务修改相同数据时，根据事务隔离级别以及使用的<code>select</code>类型会有不同的表现。总的来说，对于普通<code>select</code>，<code>Read Committed</code>级别会出现幻读、不可重读，由于MVCC使得读不会阻塞写。在<code>Repeatable Read</code>级别，因为MVCC不会出现幻读，可重读，但是会有<code>write skew</code>。<br>加锁<code>select</code>在<code>Read Committed</code>级别只会出现幻读，在<code>Repeatable Read</code>级别，通过<code>Next-Key Lock</code>锁定<code>where</code>查询范围避免了幻读。</p>
+<h3 id="Redis中的事务"><a href="#Redis中的事务" class="headerlink" title="Redis中的事务"></a>Redis中的事务</h3><p>与关系型数据库不同，<code>Redis</code>对于事务的支持没有那么完善，因此与MySQL有所区别。</p>
+<ol>
+<li><code>Redis</code>对于同一事务中的一组操作，而不是立即执行，而是放入一个队列，当执行到<code>EXEC</code>时，再一起执行。</li>
+<li>事务执行是全局独占的，也就是同一时间只有一个事务被执行，中途不能被其它事务打断。</li>
+<li>在<code>Redis</code>的事务中，如果有一个或多个操作失败，其它操作仍然会成功，也就是说它根本没有回滚机制。</li>
+</ol>
+<p>这种事务导致我们无法执行先读取某个数值后再进行依赖这个值的操作，比如自增操作(不使用<code>INCR</code>)，先<code>GET</code>在<code>SET</code>会有并发问题，因此要放在同一事务中，但是事务只有<code>EXEC</code>时才会全部执行，我们没法得到<code>GET</code>的值。解决办法是使用<code>WATCH</code>，其实也就是乐观锁的应用。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.cnblogs.com/chenqionghe/p/4845693.html">MySQL中的锁（表锁、行锁）</a><br><a href="https://dev.mySQL.com/doc/refman/8.0/en/innodb-locking-reads.html">MySQL文档</a><br><a href="https://www.zhihu.com/question/23242151">数据库的事务隔离与锁机制</a><br><a href="https://www.zhihu.com/question/29322320">数据库并发时如何保证数据的正确性？</a><br><a href="https://wjqwsp.github.io/2016/09/05/PostgreSQL-MVCC%E6%9C%BA%E5%88%B6%E6%B5%85%E6%9E%90/">PostgreSQL MVCC机制浅析</a></p>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/关于https/" class="archive-article-date">
-  	<time datetime="2017-03-10T02:11:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/关于https/">https</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list">
@@ -298,271 +291,84 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/https参考资料/" class="archive-article-date">
-  	<time datetime="2017-03-09T12:39:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/https参考资料/">https参考资料</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color5">参考资料</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/CSS总结篇-五/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/CSS总结篇-五/">CSS总结篇(五)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/CSS总结篇-四/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/CSS总结篇-四/">CSS总结篇(四)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
       
-		</ul>
-	</div>
-
-          
-
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/CSS总结篇-三/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/CSS总结篇-三/">CSS总结篇(三)</a>
-    </h1>
-  
+</div>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/数据库事务/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/CSS总结篇-二/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/CSS总结篇-二/">CSS总结篇(二)</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
+  
+<nav id="article-nav">
+  
+  
+    <a href="/理解async-await/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">理解async/await</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/CSS总结篇-一/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/CSS总结篇-一/">CSS总结篇(一)</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/4/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/6/">Next &raquo;</a>
-    </nav>
-  
+
 
 
           </div>
@@ -601,8 +407,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
