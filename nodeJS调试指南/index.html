@@ -6,23 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>es6class揭秘 | Realwate的博客</title>
+  <title>nodeJS调试方法 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="keywords" content="前端,javascript">
+  <meta name="description" content="介绍node的调试方法。">
+<meta name="keywords" content="综合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="es6class揭秘">
-<meta property="og:url" content="https://realwate.com/es6class揭秘/index.html">
+<meta property="og:title" content="nodeJS调试方法">
+<meta property="og:url" content="https://realwate.com/nodeJS调试指南/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
+<meta property="og:description" content="介绍node的调试方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/class.png">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/relation.png">
-<meta property="og:updated_time" content="2017-12-05T10:37:29.515Z">
+<meta property="og:image" content="https://realwate.com/assets/img/debugger/chrome.png">
+<meta property="og:updated_time" content="2018-02-25T14:43:29.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="es6class揭秘">
-<meta name="twitter:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="twitter:image" content="https://realwate.com/assets/img/es6/class.png">
+<meta name="twitter:title" content="nodeJS调试方法">
+<meta name="twitter:description" content="介绍node的调试方法。">
+<meta name="twitter:image" content="https://realwate.com/assets/img/debugger/chrome.png">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -144,19 +143,19 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-es6class揭秘" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-nodeJS调试指南" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      es6class揭秘
+      nodeJS调试方法
     </h1>
   
 
-        <a href="/es6class揭秘/" class="archive-article-date">
-  	<time datetime="2017-06-08T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-08</time>
+        <a href="/nodeJS调试指南/" class="archive-article-date">
+  	<time datetime="2018-02-25T10:26:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-25</time>
 </a>
       </header>
     
@@ -176,7 +175,7 @@ var _hmt = _hmt || [];
                        <strong class="toc-title">目录</strong>
                      </div>
                      <div class="toc-content">
-                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#class语法"><span class="toc-number">1.</span> <span class="toc-text">class语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#es5语法"><span class="toc-number">2.</span> <span class="toc-text">es5语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li></ol>
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#调试协议"><span class="toc-number">1.</span> <span class="toc-text">调试协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Debugger-Protocol"><span class="toc-number">1.1.</span> <span class="toc-text">Debugger Protocol</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inspector-Protocol"><span class="toc-number">1.2.</span> <span class="toc-text">Inspector Protocol</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开启调试"><span class="toc-number">2.</span> <span class="toc-text">开启调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单进程"><span class="toc-number">2.1.</span> <span class="toc-text">单进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多进程"><span class="toc-number">2.2.</span> <span class="toc-text">多进程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#已启动进程"><span class="toc-number">2.3.</span> <span class="toc-text">已启动进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调试工具"><span class="toc-number">3.</span> <span class="toc-text">调试工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chrome-devtools"><span class="toc-number">3.1.</span> <span class="toc-text">Chrome devtools</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VS-Code"><span class="toc-number">3.2.</span> <span class="toc-text">VS Code</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
                      </div>
                   </div>
                 </div>
@@ -197,13 +196,34 @@ var _hmt = _hmt || [];
              
              <!-- 目录内容结束 -->
 
-        <p>在<code>es6</code>中，新增了<code>class</code>关键字用于定义一个类，但是本质上并没有给<code>javascript</code>增加新的<code>oop机制</code> <a id="more"></a> ，因为<code>javascript</code>原型继承以及构造函数式声明使人感到晦涩难懂，添加<code>class</code>的目的就是为了掩盖它底层的机制，使得我们不用直接接触这些概念，相当于一个语法糖。</p>
-<h3 id="class语法"><a href="#class语法" class="headerlink" title="class语法"></a>class语法</h3><p>在<code>chrome</code>中运行以下代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">this</span>.name = <span class="string">"Super"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      superSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">super</span>();</span><br><span class="line">          <span class="keyword">this</span>.realName = <span class="string">"Sub"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      subSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"sub hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<p>调试观察<code>sub</code>的值。</p>
-<p><img src="/assets/img/es6/class.png" alt="class"></p>
-<p>我们发现所有的方法都是定义在对象的<code>prototype</code>属性上,不难得出这几者的关系如下图所示<br><img src="/assets/img/es6/relation.png" alt="relation"></p>
-<h3 id="es5语法"><a href="#es5语法" class="headerlink" title="es5语法"></a>es5语法</h3><p><code>es6</code>中的<code>class</code>与我们之前写的原型继承基本一致，同样的关系用<code>es5</code>来写的话<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name= <span class="string">"Super"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Super.prototype.superSayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sub</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//借用父类构造函数 等价于es6中的super()</span></span><br><span class="line">    Super.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">this</span>.realName= <span class="string">"Sub"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//以上只实现了数据的复制</span></span><br><span class="line"><span class="comment">//使用Object.create() 而不是new Sub(); 避免调用两次Sub();</span></span><br><span class="line">Sub.prototype = <span class="built_in">Object</span>.create(Super.prototype);</span><br><span class="line">Sub.prototype.constructor = Sub;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>因为<code>javascript</code>本质上是没有类这个概念，一切皆对象，为了模拟其它面向对象语言的特性(如<code>JAVA</code>)，出现了许多种间接实现继承的方法。以上<code>es5</code>的继承其实就是我们说的寄生式组合继承，也是<code>javascript</code>中最常用的继承模式。</p>
+        <p>介绍<code>node</code>的调试方法。<br><a id="more"></a></p>
+<h3 id="调试协议"><a href="#调试协议" class="headerlink" title="调试协议"></a>调试协议</h3><p>在<code>node</code>中一旦开启调试，它会使用专门的调试端口，接收我们发送的命令，从而控制代码的运行过程。两者间通信的数据格式由协议来约定。现有的协议有以下两种。</p>
+<h4 id="Debugger-Protocol"><a href="#Debugger-Protocol" class="headerlink" title="Debugger Protocol"></a>Debugger Protocol</h4><p>是<code>Node</code>一直就拥有的调试协议，使用一个 TCP 端口（通常是 5858）与Client/IDE 交互，之前比较流行的第三方调试工具 <code>node-inspector</code> 就是基于这个协议。 </p>
+<h4 id="Inspector-Protocol"><a href="#Inspector-Protocol" class="headerlink" title="Inspector Protocol"></a>Inspector Protocol</h4><p>是 <code>Node v6.3</code> 新加入的调试协议，通过 <code>websocket</code> （通常使用 9229 端口）与 Client/IDE 交互。<br>一般来说，我们会优先选择<code>Inspector Protocol</code>，因为它解决了<code>Debugger Protocol</code>的一些调试问题，更加强大。只有在调试一些遗留项目时，才会使用旧协议。</p>
+<h3 id="开启调试"><a href="#开启调试" class="headerlink" title="开启调试"></a>开启调试</h3><h4 id="单进程"><a href="#单进程" class="headerlink" title="单进程"></a>单进程</h4><p>使用<code>--inspect</code>选项启动<code>node</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node --inspect=9229 yourScript.js</span><br></pre></td></tr></table></figure></p>
+<p>我们更多的会使用<code>--inspect-brk</code>选项，它会让代码暂停在开始的地方，也就是第一行。</p>
+<h4 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h4><ol>
+<li>使用<code>child_process.fork()</code> 开启子进程时可以传入 <code>execArgv</code>，使用 <code>execArgv.push(&#39;--inspect=9229&#39;)</code> 添加执行参数，开启子进程的调试端口。</li>
+<li>在已经开启调试端口（以 9229 为例）的进程使用 <code>cluster.fork()</code> 克隆进程，<strong>新进程会自动开启调试</strong>，使用的端口在原进程的端口上递增（9230、9231、9232）。<h4 id="已启动进程"><a href="#已启动进程" class="headerlink" title="已启动进程"></a>已启动进程</h4>使用以下命令，<code>pid</code>为已启动的<code>node</code>的进程号。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -e <span class="string">"process._debugProcess(pid)"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行，原来的 <code>node</code>进程会打印出<code>Debugger</code>提示。</p>
+<h3 id="调试工具"><a href="#调试工具" class="headerlink" title="调试工具"></a>调试工具</h3><p>所有的第三方调试工具本质上都是基于我们上面提到的这些，并且提供了图形化的界面和更加丰富的功能。</p>
+<h4 id="Chrome-devtools"><a href="#Chrome-devtools" class="headerlink" title="Chrome devtools"></a>Chrome devtools</h4><p><code>chrome</code>版本需要<code>55+</code>。使用非常简单。</p>
+<ol>
+<li><code>node --inspect=9229 yourScript.js</code>启动脚本</li>
+<li><code>chrome</code>输入<code>chrome://inspect/</code>，配置好<code>ip + port</code>就可以调试了。</li>
+</ol>
+<p>另外我们还可以使用<code>Console</code>,<code>Profile</code>,<code>Sources</code>等<code>panel</code>，带来类似前端<code>debug</code>的体验。</p>
+<p><img src="/assets/img/debugger/chrome.png" alt="devtools"></p>
+<p>由于每次都需要手动输入地址，我们可以使用NIM (Node Inspector Manager) 插件，它可以设置自动发现node程序并打开DevTools。</p>
+<h4 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h4><p><code>VS Code</code>下的调试也非常简单，只需要配置<code>launch.json</code>文件，然后<code>F5</code>运行即可。以一个典型的配置文件为例。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">  <span class="attr">"configurations"</span>: [&#123;</span><br><span class="line">      <span class="attr">"name"</span>: <span class="string">"Launch Egg"</span>,</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"node"</span>,</span><br><span class="line">      <span class="attr">"request"</span>: <span class="string">"launch"</span>,      </span><br><span class="line">      <span class="attr">"cwd"</span>: <span class="string">"$&#123;workspaceRoot&#125;"</span>,</span><br><span class="line">      "runtimeExecutable": "npm", // 使用npm运行</span><br><span class="line">      "windows": &#123;</span><br><span class="line">        "runtimeExecutable": "npm.cmd" // windows系统下</span><br><span class="line">      &#125;,</span><br><span class="line">      "runtimeArgs": [          </span><br><span class="line">        "run",</span><br><span class="line">        "debug",</span><br><span class="line">        "--", </span><br><span class="line">        "--inspect-brk"         //传递给npm的参数 -- 后的传给node</span><br><span class="line">      ],</span><br><span class="line">      "autoAttachChildProcesses": true,  // 自动 attach 子进程</span><br><span class="line">      "console": "integratedTerminal",</span><br><span class="line">      "protocol": "auto",  // 自动选择协议</span><br><span class="line">      "restart": true,        </span><br><span class="line">      "port": 9229      // 选择端口</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里有两点要注意</p>
+<ol>
+<li><code>request</code>为<code>launch</code>意味着我们是启动这个项目并且<code>debug</code>，如果node程序已经启动，这时就需要修改<code>request</code>为<code>attach</code>了。</li>
+<li>对于多进程调试加上<code>autoAttachChildProcesses: true</code>(需要<code>request</code>为<code>launch</code>)，自动<code>attach</code>子进程。</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://zhuanlan.zhihu.com/p/30264842">Node 调试指南</a><br><a href="https://zhuanlan.zhihu.com/p/29554833">Node.js 性能调优之调试篇</a><br><a href="https://code.visualstudio.com/docs/nodejs/nodejs-debugging">nodejs-debugging</a></p>
 
       
 
@@ -218,11 +238,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
         </li>
       
 		</ul>
@@ -278,7 +294,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/es6class揭秘/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/nodeJS调试指南/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -292,18 +308,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/React渲染原理理解/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          React渲染原理理解
-        
-      </div>
-    </a>
   
-  
-    <a href="/React/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Thinking in React</div>
+    <a href="/数据库事务/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据库并发问题</div>
       <i class="icon-circle-right"></i>
     </a>
   
