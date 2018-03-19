@@ -6,23 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>es6class揭秘 | Realwate的博客</title>
+  <title>Archives: 2018/3 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="keywords" content="前端,javascript">
-<meta property="og:type" content="article">
-<meta property="og:title" content="es6class揭秘">
-<meta property="og:url" content="https://realwate.com/es6class揭秘/index.html">
+  <meta name="description" content="天流若水Blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Realwate的博客">
+<meta property="og:url" content="https://realwate.com/archives/2018/03/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
+<meta property="og:description" content="天流若水Blog">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/class.png">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/relation.png">
-<meta property="og:updated_time" content="2017-12-05T10:37:29.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="es6class揭秘">
-<meta name="twitter:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="twitter:image" content="https://realwate.com/assets/img/es6/class.png">
+<meta name="twitter:title" content="Realwate的博客">
+<meta name="twitter:description" content="天流若水Blog">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -144,75 +139,36 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-es6class揭秘" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      es6class揭秘
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/谈谈浏览器同源策略/" class="archive-article-date">
+  	<time datetime="2018-03-19T07:05:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/谈谈浏览器同源策略/">谈谈浏览器同源策略</a>
     </h1>
   
 
-        <a href="/es6class揭秘/" class="archive-article-date">
-  	<time datetime="2017-06-08T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-08</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-
-      <!-- 目录内容 -->
-             
-               <div class="toc-wrapper">
-                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
-                   <span class="btn-bg"></span>
-                   <span class="btn-text">文章导航</span>
-                   </p>
-                   <div id="toc-article" class="toc-article">
-                     <div class="toc-header">
-                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
-                       <strong class="toc-title">目录</strong>
-                     </div>
-                     <div class="toc-content">
-                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#class语法"><span class="toc-number">1.</span> <span class="toc-text">class语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#es5语法"><span class="toc-number">2.</span> <span class="toc-text">es5语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li></ol>
-                     </div>
-                  </div>
-                </div>
-                <script type="text/javascript">
-                 function showToc(){
-                     var toc_article = document.getElementById("toc-article");
-                     var show_toc_btn = document.getElementById("show-toc-btn");
-                     toc_article.setAttribute("style","display:block");
-                     show_toc_btn.setAttribute("style","display:none");
-                     };
-                 function showBtn(){
-                     var toc_article = document.getElementById("toc-article");
-                     var show_toc_btn = document.getElementById("show-toc-btn");
-                     toc_article.setAttribute("style","display:none");
-                     show_toc_btn.setAttribute("style","display:block");
-                     };
-                </script>
-             
-             <!-- 目录内容结束 -->
-
-        <p>在<code>es6</code>中，新增了<code>class</code>关键字用于定义一个类，但是本质上并没有给<code>javascript</code>增加新的<code>oop机制</code> <a id="more"></a> ，因为<code>javascript</code>原型继承以及构造函数式声明使人感到晦涩难懂，添加<code>class</code>的目的就是为了掩盖它底层的机制，使得我们不用直接接触这些概念，相当于一个语法糖。</p>
-<h3 id="class语法"><a href="#class语法" class="headerlink" title="class语法"></a>class语法</h3><p>在<code>chrome</code>中运行以下代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">this</span>.name = <span class="string">"Super"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      superSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">super</span>();</span><br><span class="line">          <span class="keyword">this</span>.realName = <span class="string">"Sub"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      subSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"sub hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<p>调试观察<code>sub</code>的值。</p>
-<p><img src="/assets/img/es6/class.png" alt="class"></p>
-<p>我们发现所有的方法都是定义在对象的<code>prototype</code>属性上,不难得出这几者的关系如下图所示<br><img src="/assets/img/es6/relation.png" alt="relation"></p>
-<h3 id="es5语法"><a href="#es5语法" class="headerlink" title="es5语法"></a>es5语法</h3><p><code>es6</code>中的<code>class</code>与我们之前写的原型继承基本一致，同样的关系用<code>es5</code>来写的话<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name= <span class="string">"Super"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Super.prototype.superSayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sub</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//借用父类构造函数 等价于es6中的super()</span></span><br><span class="line">    Super.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">this</span>.realName= <span class="string">"Sub"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//以上只实现了数据的复制</span></span><br><span class="line"><span class="comment">//使用Object.create() 而不是new Sub(); 避免调用两次Sub();</span></span><br><span class="line">Sub.prototype = <span class="built_in">Object</span>.create(Super.prototype);</span><br><span class="line">Sub.prototype.constructor = Sub;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>因为<code>javascript</code>本质上是没有类这个概念，一切皆对象，为了模拟其它面向对象语言的特性(如<code>JAVA</code>)，出现了许多种间接实现继承的方法。以上<code>es5</code>的继承其实就是我们说的寄生式组合继承，也是<code>javascript</code>中最常用的继承模式。</p>
-
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list">
@@ -222,99 +178,25 @@ var _hmt = _hmt || [];
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
         </li>
       
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/es6class揭秘/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/React渲染原理理解/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          React渲染原理理解
-        
-      </div>
-    </a>
   
   
-    <a href="/React/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Thinking in React</div>
-      <i class="icon-circle-right"></i>
-    </a>
+    </div></section>
   
-</nav>
 
-
-
-
-
-
-
+    
 
 
           </div>
@@ -353,8 +235,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -6,23 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>es6class揭秘 | Realwate的博客</title>
+  <title>谈谈浏览器同源策略 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="keywords" content="前端,javascript">
+  <meta name="description" content="谈到同源策略(same-origin policy)，一般就会想到跨域请求以及常用的跨域请求方式，但是同源策略不止于此。">
+<meta name="keywords" content="前端,综合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="es6class揭秘">
-<meta property="og:url" content="https://realwate.com/es6class揭秘/index.html">
+<meta property="og:title" content="谈谈浏览器同源策略">
+<meta property="og:url" content="https://realwate.com/谈谈浏览器同源策略/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
+<meta property="og:description" content="谈到同源策略(same-origin policy)，一般就会想到跨域请求以及常用的跨域请求方式，但是同源策略不止于此。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/class.png">
-<meta property="og:image" content="https://realwate.com/assets/img/es6/relation.png">
-<meta property="og:updated_time" content="2017-12-05T10:37:29.515Z">
+<meta property="og:updated_time" content="2018-03-19T11:23:37.093Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="es6class揭秘">
-<meta name="twitter:description" content="在es6中，新增了class关键字用于定义一个类，但是本质上并没有给javascript增加新的oop机制">
-<meta name="twitter:image" content="https://realwate.com/assets/img/es6/class.png">
+<meta name="twitter:title" content="谈谈浏览器同源策略">
+<meta name="twitter:description" content="谈到同源策略(same-origin policy)，一般就会想到跨域请求以及常用的跨域请求方式，但是同源策略不止于此。">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -144,19 +141,19 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-es6class揭秘" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-谈谈浏览器同源策略" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      es6class揭秘
+      谈谈浏览器同源策略
     </h1>
   
 
-        <a href="/es6class揭秘/" class="archive-article-date">
-  	<time datetime="2017-06-08T12:53:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-08</time>
+        <a href="/谈谈浏览器同源策略/" class="archive-article-date">
+  	<time datetime="2018-03-19T07:05:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-19</time>
 </a>
       </header>
     
@@ -176,7 +173,7 @@ var _hmt = _hmt || [];
                        <strong class="toc-title">目录</strong>
                      </div>
                      <div class="toc-content">
-                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#class语法"><span class="toc-number">1.</span> <span class="toc-text">class语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#es5语法"><span class="toc-number">2.</span> <span class="toc-text">es5语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩展"><span class="toc-number">3.</span> <span class="toc-text">扩展</span></a></li></ol>
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#影响"><span class="toc-number">2.</span> <span class="toc-text">影响</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#请求"><span class="toc-number">2.1.</span> <span class="toc-text">请求</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#CORS"><span class="toc-number">2.1.1.</span> <span class="toc-text">CORS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#安全问题"><span class="toc-number">2.1.2.</span> <span class="toc-text">安全问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#其他跨源方式"><span class="toc-number">2.1.3.</span> <span class="toc-text">其他跨源方式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据存储"><span class="toc-number">2.2.</span> <span class="toc-text">数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#cookie"><span class="toc-number">2.2.1.</span> <span class="toc-text">cookie</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#其他"><span class="toc-number">2.2.2.</span> <span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM"><span class="toc-number">2.3.</span> <span class="toc-text">DOM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
                      </div>
                   </div>
                 </div>
@@ -197,13 +194,31 @@ var _hmt = _hmt || [];
              
              <!-- 目录内容结束 -->
 
-        <p>在<code>es6</code>中，新增了<code>class</code>关键字用于定义一个类，但是本质上并没有给<code>javascript</code>增加新的<code>oop机制</code> <a id="more"></a> ，因为<code>javascript</code>原型继承以及构造函数式声明使人感到晦涩难懂，添加<code>class</code>的目的就是为了掩盖它底层的机制，使得我们不用直接接触这些概念，相当于一个语法糖。</p>
-<h3 id="class语法"><a href="#class语法" class="headerlink" title="class语法"></a>class语法</h3><p>在<code>chrome</code>中运行以下代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">this</span>.name = <span class="string">"Super"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      superSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Super</span></span>&#123;</span><br><span class="line">      <span class="keyword">constructor</span>()&#123;</span><br><span class="line">          <span class="keyword">super</span>();</span><br><span class="line">          <span class="keyword">this</span>.realName = <span class="string">"Sub"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      subSayHello()&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"sub hello"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<p>调试观察<code>sub</code>的值。</p>
-<p><img src="/assets/img/es6/class.png" alt="class"></p>
-<p>我们发现所有的方法都是定义在对象的<code>prototype</code>属性上,不难得出这几者的关系如下图所示<br><img src="/assets/img/es6/relation.png" alt="relation"></p>
-<h3 id="es5语法"><a href="#es5语法" class="headerlink" title="es5语法"></a>es5语法</h3><p><code>es6</code>中的<code>class</code>与我们之前写的原型继承基本一致，同样的关系用<code>es5</code>来写的话<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name= <span class="string">"Super"</span>;</span><br><span class="line">&#125;</span><br><span class="line">Super.prototype.superSayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"super hello"</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sub</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//借用父类构造函数 等价于es6中的super()</span></span><br><span class="line">    Super.call(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">this</span>.realName= <span class="string">"Sub"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//以上只实现了数据的复制</span></span><br><span class="line"><span class="comment">//使用Object.create() 而不是new Sub(); 避免调用两次Sub();</span></span><br><span class="line">Sub.prototype = <span class="built_in">Object</span>.create(Super.prototype);</span><br><span class="line">Sub.prototype.constructor = Sub;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sub = <span class="keyword">new</span> Sub();</span><br></pre></td></tr></table></figure></p>
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>因为<code>javascript</code>本质上是没有类这个概念，一切皆对象，为了模拟其它面向对象语言的特性(如<code>JAVA</code>)，出现了许多种间接实现继承的方法。以上<code>es5</code>的继承其实就是我们说的寄生式组合继承，也是<code>javascript</code>中最常用的继承模式。</p>
+        <p>谈到同源策略(same-origin policy)，一般就会想到跨域请求以及常用的跨域请求方式，但是同源策略不止于此。<br><a id="more"></a></p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>同源策略限制了从同一个源加载的文档或脚本如何与来自另一个源的资源进行交互，是浏览器的安全策略。如果两个页面的协议，端口和域名都相同，则它们具有相同的源。</p>
+<h3 id="影响"><a href="#影响" class="headerlink" title="影响"></a>影响</h3><h4 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h4><p><code>ajax</code>请求只能发给同源的网址，然而实践中我们经常需要跨源发送请求，W3C标准提供了<code>跨域资源共享</code>(Cross-origin resource sharing)规范，允许我们发起跨源请求。</p>
+<h5 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h5><p>总的来说，它定义了一些<code>http</code>头部字段，在我们发送跨源请求时会先发送一个<code>options</code>预检请求，告诉服务器本次请求的源、方法和字段等数据，服务器接收到该请求后，判断这些信息后决定是否接受这个跨源请求，并返回相应的<code>http</code>响应头字段。浏览器接收到响应，再根据响应头决定是否发送真正的请求。</p>
+<p>当然，这种方式也有问题，因为<code>CORS</code>是新定义的跨源请求规范，在浏览器中，我们发送请求可以通过<code>ajax</code>或者提交表单进行，而<strong>提交表单是允许跨源提交</strong>的(从网站诞生的时候就允许)，那么同样一个请求，通过<code>form</code>发送和通过<code>ajax</code>(xhr,fetch)发送，是否也都要发送预检请求？</p>
+<p>首先为了保证向下兼容，对于表单提交我们是不能发送预检请求的，那ajax发的请求呢？答案是都不需要。<strong>因为对服务器来说两种请求(表单提交和非表单提交)并没有区别</strong>。</p>
+<p>因此<strong>最终的<code>CORS</code>区分了简单请求和预检请求</strong>，简单请求就是普通表单能发出的请求(也包括用<code>ajax</code>发出的)，对于这些请求浏览器会直接发送，然后在接收到服务器响应后，针对是表单还是<code>js</code>发出的请求，浏览器的处理又有一些差异。</p>
+<p>对于表单，自然是直接跳转页面，而对于<code>js</code>，浏览器会先检查服务器返回的响应头是否支持本次请求，<strong>如果是才会让我们在js中拿到响应内容，否则抛出异常。</strong> 详细的<code>CORS</code>请求头等内容可查看<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS">CORS</a></p>
+<h5 id="安全问题"><a href="#安全问题" class="headerlink" title="安全问题"></a>安全问题</h5><p>预检请求因为会先发送<code>options</code>请求，在服务器不支持的情况下是不会对数据造成影响的。而简单请求，不论是<code>form</code>还是<code>ajax</code>，都会直接发送请求，如果服务器没做跨源安全措施很容易实现<code>CSRF</code>攻击，破坏服务端数据。</p>
+<h5 id="其他跨源方式"><a href="#其他跨源方式" class="headerlink" title="其他跨源方式"></a>其他跨源方式</h5><p>常用的还有<code>jsonp</code>，原理是同源策略没有限制嵌入资源的加载，如<code>script</code>，<code>img</code>等标签。因此可以通过<code>script</code>加载一段脚本，其中包含着数据，当然这种方式只能针对<code>get</code>请求。<br>也可以服务端做处理，如使用<code>nginx</code>反向代理转发请求。</p>
+<h4 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h4><h5 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h5><p><code>Cookie</code> 使用了不同的源定义方式，由<code>Domain</code> 和 <code>Path</code> 决定我们在<code>javascript</code>中能获取到的<code>Cookie</code>数量。</p>
+<p><code>Domain</code> 对应域名，如果不指定默认为当前文档的域名(<code>document.location.host</code>)。<code>Path</code>表示对应<code>Domain</code>下的服务器路径，默认情况下也为当前。</p>
+<p>现有URL <code>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies</code>，默认情况下的Domain为<code>developer.mozilla.org</code>，Path为<code>/zh-CN/docs/Web/HTTP</code>。</p>
+<p><code>Domain</code>和<code>Path</code>都会匹配子域名和子路径，如<code>.baidu.com</code>能匹配<code>www.baidu.com</code>等子域名，<code>/docs</code>能匹配<code>/docs/Web/</code>等子路径。</p>
+<h5 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h5><p>其他浏览器本地存储，如<code>localStorage</code>和<code>IndexedDB</code>，仍然以源进行分割。每个源都拥有自己单独的存储空间，一个源中的脚本不能对属于其它源的数据进行读写操作。</p>
+<h4 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h4><p>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是<code>iframe</code>窗口和<code>window.open</code>方法打开的窗口，它们无法使用<code>document.getElementById(&quot;myIFrame&quot;).contentWindow.document</code>和<code>window.parent.document</code>进行DOM操作。</p>
+<p>对于两个二级域名，我们可以使用<code>document.domain</code>设置为一级域名。完全不同源的可以利用<code>location.hash</code>，<code>window.name</code>两个特殊的属性。还可以使用专门的跨文档通信API <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage">window.postMessage</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>浏览器的同源策略为了安全起见限制了我们的一些脚本操作，它们是</p>
+<ul>
+<li>ajax请求</li>
+<li>DOM操作</li>
+<li>数据存储</li>
+</ul>
+<p>知道了里面的细节能帮助我们更好的理解一些问题，如虽然有<code>CORS</code>机制的存在，但是提交表单并不会受影响，仍有可能被<code>CSRF</code>攻击，因此有时需要前端配合后端来进行请求的合法性校验。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">浏览器同源策略</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html">浏览器同源政策及其规避方法</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html">跨域资源共享 CORS 详解</a><br><a href="https://www.zhihu.com/question/268998684">为什么跨域的post请求区分为简单请求和非简单请求</a></p>
 
       
 
@@ -222,7 +237,7 @@ var _hmt = _hmt || [];
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
         </li>
       
 		</ul>
@@ -278,7 +293,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/es6class揭秘/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/谈谈浏览器同源策略/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -292,18 +307,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/React渲染原理理解/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          React渲染原理理解
-        
-      </div>
-    </a>
   
-  
-    <a href="/React/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Thinking in React</div>
+    <a href="/nodeJS调试指南/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">nodeJS调试方法</div>
       <i class="icon-circle-right"></i>
     </a>
   
