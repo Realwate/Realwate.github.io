@@ -6,18 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>Realwate的博客</title>
+  <title>再探Vue虚拟DOM/Diff算法(下) | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天流若水Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Realwate的博客">
-<meta property="og:url" content="https://realwate.com/page/6/index.html">
+  <meta name="description" content="前言这一篇主要探究 数据的变化是如何影响到组件VNode的render，以及VNode节点之间的diff算法。">
+<meta name="keywords" content="前端,Vue,javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再探Vue虚拟DOM&#x2F;Diff算法(下)">
+<meta property="og:url" content="https://realwate.com/再探Vue虚拟DOM-Diff算法-下/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="天流若水Blog">
+<meta property="og:description" content="前言这一篇主要探究 数据的变化是如何影响到组件VNode的render，以及VNode节点之间的diff算法。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://realwate.com/assets/img/vue/vdom1.jpg">
+<meta property="og:image" content="https://realwate.com/assets/img/vue/updatechildren.jpg">
+<meta property="og:updated_time" content="2018-03-31T03:00:36.788Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="天流若水Blog">
+<meta name="twitter:title" content="再探Vue虚拟DOM&#x2F;Diff算法(下)">
+<meta name="twitter:description" content="前言这一篇主要探究 数据的变化是如何影响到组件VNode的render，以及VNode节点之间的diff算法。">
+<meta name="twitter:image" content="https://realwate.com/assets/img/vue/vdom1.jpg">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -139,30 +144,71 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-CSS总结篇-四" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-再探Vue虚拟DOM-Diff算法-下" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-四/">CSS总结篇(四)</a>
+    <h1 class="article-title" itemprop="name">
+      再探Vue虚拟DOM/Diff算法(下)
     </h1>
   
 
-        <a href="/CSS总结篇-四/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
+        <a href="/再探Vue虚拟DOM-Diff算法-下/" class="archive-article-date">
+  	<time datetime="2018-03-31T02:03:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-31</time>
 </a>
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本篇内容有 布局,动画，响应式
-        
-          <a class="article-more-a" href="/CSS总结篇-四/#more">more >></a>
-        
+
+      <!-- 目录内容 -->
+             
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始"><span class="toc-number">2.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue-prototype-update"><span class="toc-number">3.</span> <span class="toc-text">Vue.prototype._update</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#patch"><span class="toc-number">4.</span> <span class="toc-text">patch</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#patchVnode"><span class="toc-number">4.1.</span> <span class="toc-text">patchVnode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对children的patch"><span class="toc-number">4.2.</span> <span class="toc-text">对children的patch</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考链接"><span class="toc-number">6.</span> <span class="toc-text">参考链接</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
+             <!-- 目录内容结束 -->
+
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这一篇主要探究 数据的变化是如何影响到组件<code>VNode</code>的<code>render</code>，以及<code>VNode</code>节点之间的<code>diff</code>算法。<a id="more"></a><br><a href="/再探Vue虚拟DOM-Diff算法-上">上篇地址</a></p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>使用的还是上一篇的例子，点击按钮，修改<code>this.name</code>触发<code>setter</code>，会重新调用<code>App renderWathcer</code>的<code>getter</code>。这是因为之前<code>App renderWatcher</code>中，构造<code>MyChild</code>的<code>VNode</code>需要<code>App</code>组件传递<code>this.name</code>，所以导致<code>App renderWatcher</code>依赖于<code>this.name</code>。<br><code>App renderWathcer</code>调用<code>getter</code>会<code>render</code>生成一个新的<code>VNode</code>，然后执行<code>Vue.prototype._update</code>。</p>
+<h3 id="Vue-prototype-update"><a href="#Vue-prototype-update" class="headerlink" title="Vue.prototype._update"></a>Vue.prototype._update</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype._update = <span class="function"><span class="keyword">function</span> (<span class="params">vnode, hydrating</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (vm._isMounted) &#123;</span><br><span class="line">        callHook(vm, <span class="string">'beforeUpdate'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> prevVnode = vm._vnode;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">    <span class="keyword">if</span> (!prevVnode) &#123;</span><br><span class="line">        <span class="comment">// 初始化渲染</span></span><br><span class="line">        vm.$el = vm.__patch__(</span><br><span class="line">            vm.$el, vnode, hydrating, <span class="literal">false</span> <span class="comment">/* removeOnly */</span>,</span><br><span class="line">            vm.$options._parentElm,</span><br><span class="line">            vm.$options._refElm</span><br><span class="line">        );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 更新操作</span></span><br><span class="line">        vm.$el = vm.__patch__(prevVnode, vnode);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>因为是更新操作，调用<code>vm.__patch__(prevVnode, vnode)</code></p>
+<h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span>(<span class="params">oldVnode, vnode, hydrating, removeOnly, parentElm, refElm</span>) </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (isUndef(oldVnode)) &#123;</span><br><span class="line">        <span class="comment">// 直接调用 $mount()时(没有参数)</span></span><br><span class="line">        createElm(vnode, insertedVnodeQueue, parentElm, refElm);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> isRealElement = isDef(oldVnode.nodeType);</span><br><span class="line">        <span class="comment">// 相同节点 复用</span></span><br><span class="line">        <span class="keyword">if</span> (!isRealElement &amp;&amp; sameVnode(oldVnode, vnode)) &#123;</span><br><span class="line">            <span class="comment">// 比较新旧VNode</span></span><br><span class="line">            <span class="comment">// 将vnode属性添加到dom 删除oldVnode属性</span></span><br><span class="line">            patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">var</span> oldElm = oldVnode.elm;</span><br><span class="line">            <span class="keyword">var</span> parentElm$<span class="number">1</span> = nodeOps.parentNode(oldElm);</span><br><span class="line">            <span class="comment">/* ** */</span></span><br><span class="line">            <span class="comment">// 不同节点直接 重新创建新的DOM</span></span><br><span class="line">            createElm(</span><br><span class="line">                vnode,</span><br><span class="line">                insertedVnodeQueue,</span><br><span class="line">                oldElm._leaveCb ? <span class="literal">null</span> : parentElm$<span class="number">1</span>,</span><br><span class="line">                nodeOps.nextSibling(oldElm)</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* ** */</span></span><br><span class="line">            <span class="keyword">if</span> (isDef(parentElm$<span class="number">1</span>)) &#123;</span><br><span class="line">                removeVnodes(parentElm$<span class="number">1</span>, [oldVnode], <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(oldVnode.tag)) &#123;</span><br><span class="line">                invokeDestroyHook(oldVnode);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);</span><br><span class="line">    <span class="keyword">return</span> vnode.elm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>patch</code>的目的<strong>是为了尽量复用已有的DOM元素，避免创建DOM的性能开销</strong>。复用的依据就是判断<code>sameVnode</code>，也就是新旧VNode节点判定为同一节点的时候才<code>patchVnode</code>，否则就调用<code>createElm</code>创建新的<code>DOM</code>，移除旧的<code>DOM</code>。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  判断两个VNode节点是否是同一个节点，需要满足以下条件</span></span><br><span class="line"><span class="comment">  key相同</span></span><br><span class="line"><span class="comment">  tag（当前节点的标签名）相同</span></span><br><span class="line"><span class="comment">  isComment（是否为注释节点）相同</span></span><br><span class="line"><span class="comment">  是否data（当前节点对应的对象，包含了具体的一些数据信息，是一个VNodeData类型，可以参考VNodeData类型中的数据信息）都有定义</span></span><br><span class="line"><span class="comment">  当标签是&lt;input&gt;的时候，type必须相同</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    a.key === b.key &amp;&amp;</span><br><span class="line">    a.tag === b.tag &amp;&amp;</span><br><span class="line">    a.isComment === b.isComment &amp;&amp;</span><br><span class="line">    isDef(a.data) === isDef(b.data) &amp;&amp;</span><br><span class="line">    sameInputType(a, b)</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="patchVnode"><a href="#patchVnode" class="headerlink" title="patchVnode"></a>patchVnode</h4><p>决定复用DOM节点后，需要在比较新旧VNode的差异，然后将差异映射到真实的DOM操作中，<code>patchVnode</code>做的就是这件事。代码如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">patchVnode</span> (<span class="params">oldVnode, vnode, insertedVnodeQueue, removeOnly</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (oldVnode === vnode) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 指向同一DOM</span></span><br><span class="line">    <span class="keyword">var</span> elm = vnode.elm = oldVnode.elm;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> i;</span><br><span class="line">    <span class="keyword">var</span> data = vnode.data;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">if</span> (isDef(data) &amp;&amp; isDef(i = data.hook) &amp;&amp; isDef(i = i.prepatch)) &#123;</span><br><span class="line">        i(oldVnode, vnode);</span><br><span class="line">         <span class="comment">// 组件VNode会调用prepatch钩子 用于更新内部子组件，代码如下</span></span><br><span class="line">             <span class="comment">/* </span></span><br><span class="line"><span class="comment">             function prepatch (oldVnode, vnode) &#123;</span></span><br><span class="line"><span class="comment">                var options = vnode.componentOptions;</span></span><br><span class="line"><span class="comment">                var child = vnode.componentInstance = oldVnode.componentInstance;</span></span><br><span class="line"><span class="comment">                updateChildComponent(</span></span><br><span class="line"><span class="comment">                    child,</span></span><br><span class="line"><span class="comment">                    options.propsData, // updated props</span></span><br><span class="line"><span class="comment">                    options.listeners, // updated listeners</span></span><br><span class="line"><span class="comment">                    vnode, // new parent vnode</span></span><br><span class="line"><span class="comment">                    options.children // new children</span></span><br><span class="line"><span class="comment">                );</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> oldCh = oldVnode.children;</span><br><span class="line">    <span class="keyword">var</span> ch = vnode.children;</span><br><span class="line">    <span class="keyword">if</span> (isDef(data) &amp;&amp; isPatchable(vnode)) &#123;</span><br><span class="line">        <span class="comment">// 对比vnode，oldVnode的 style,attrs,DOMListeners 等属性</span></span><br><span class="line">        <span class="comment">// 调用cbs.update更新到真实DOM中</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; cbs.update.length; ++i) &#123; cbs.update[i](oldVnode, vnode); &#125;</span><br><span class="line">        <span class="keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.update)) &#123; i(oldVnode, vnode); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 更新子节点，如果都是文本节点直接替换文本</span></span><br><span class="line">    <span class="comment">// 如果一方没有子节点直接 添加或删除子节点</span></span><br><span class="line">    <span class="comment">// 如果都有，需要调用 updateChildren</span></span><br><span class="line">    <span class="keyword">if</span> (isUndef(vnode.text)) &#123;</span><br><span class="line">        <span class="comment">// 在新旧节点都有children 需要比较每个孩子</span></span><br><span class="line">        <span class="keyword">if</span> (isDef(oldCh) &amp;&amp; isDef(ch)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (oldCh !== ch) &#123; updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(ch)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isDef(oldVnode.text)) &#123; nodeOps.setTextContent(elm, <span class="string">''</span>); &#125;</span><br><span class="line">            <span class="comment">// ch 转化为DOM添加到elm中</span></span><br><span class="line">            addVnodes(elm, <span class="literal">null</span>, ch, <span class="number">0</span>, ch.length - <span class="number">1</span>, insertedVnodeQueue);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(oldCh)) &#123;</span><br><span class="line">            <span class="comment">// 删除oldCh对应的DOM</span></span><br><span class="line">            removeVnodes(elm, oldCh, <span class="number">0</span>, oldCh.length - <span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(oldVnode.text)) &#123;</span><br><span class="line">            <span class="comment">// 置空</span></span><br><span class="line">            nodeOps.setTextContent(elm, <span class="string">''</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (oldVnode.text !== vnode.text) &#123;</span><br><span class="line">        <span class="comment">// 替换文本</span></span><br><span class="line">        nodeOps.setTextContent(elm, vnode.text); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isDef(data)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.postpatch)) &#123; i(oldVnode, vnode); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>patchVnode</code>的核心就是调用<code>cbs.update</code>将<code>VNode</code>差异更新到DOM属性上，包括<code>attrs</code>,<code>class</code>,<code>domListeners</code>等等。除了更新自身外，还要更新它下面的子节点，代码中根据不同的情况做不同的处理（复杂情况下要调用<code>updateChildren</code>，稍后会专门分析它）。但是，实际上这里对<code>App</code>级别的<code>patch</code>其实是无意义的，因为<code>App</code>根组件的<strong>VNode结构</strong>如下所示<br><img src="/assets/img/vue/vdom1.jpg" alt="结构"><br>两次<code>render</code>，<code>App</code>的<code>VNode</code>结构没有变化。<code>this.name</code>真正影响到的是子组件<code>MyChild</code>，我们需要通知<code>MyChild</code>组件让它进行<code>patch</code>。<br>在比较两个<code>MyChild</code>组件<code>VNode</code>时，因为是组件级别的<code>VNode</code>，会触发<code>data.hook.prepatch</code>，更新<code>MyChild</code>的<code>$props</code>、<code>$slots</code>等数据。<code>propsData</code>的<code>setter</code>操作会通知<code>MyChild</code>的<code>renderWatcher</code>，将它加入到异步更新队列。<br><code>App</code>级别的<code>patch</code>结束后会进行<code>MyChild</code>的<code>patch</code>，在我们的例子中，最终会调用<code>nodeOps.setTextContent(elm, vnode.text);</code>完成对<code>text</code>的更新。</p>
+<h4 id="对children的patch"><a href="#对children的patch" class="headerlink" title="对children的patch"></a>对children的patch</h4><p>对于根<code>VNode</code>，只要不是<code>sameVnode</code>，我们就<code>createElm</code>，重新创建整个<code>DOM</code>，这没有问题。但是对于它下面的<code>children</code>，有可能只是发生了移动，秉着 <strong>尽量复用已有的DOM元素</strong> 的原则，我们需要通过一种算法，识别出<code>children</code>的移动，并根据它在新<code>VNode</code>中的位置，相应的移动DOM元素，实现复用。<br>这一算法体现在源码中的<code>updateChildren</code>函数内，具体的代码不贴了，详细的算法分析可以看文末的参考链接，这里用一张图演示<strong>a,b,c,d</strong> 变换到 <strong>b,a,d,e</strong>的算法过程<br><img src="/assets/img/vue/updatechildren.jpg" alt="结构"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总的来说，在更新DOM时，<code>Vue</code>会尽量复用已有<code>DOM</code>节点，然后对比新旧<code>VNode</code>差异，通过<code>cbs.update</code>映射到真实的DOM操作，如果复用不了，再调用<code>createElm</code>创建新的<code>DOM</code>节点。<br>特别的，在比较children节点时，我们需要判断它是否移动了位置，如果是，以一定算法移动DOM，来实现DOM的复用。<br>另外，<code>Vue</code>的<code>diff</code>算法是组件级别的，通过依赖收集在数据变化时通知对应组件的<code>renderWatcher</code>，组件内部再<code>diff</code>，因此我们在开发中要特别<strong>注意组件的拆分，将相关的数据与视图划分成组件</strong>，避免不必要的<code>vnode render</code>以及<code>diff</code>(<code>patchVnode</code>)运算过程。</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://github.com/answershuto/learnVue/blob/master/docs/VirtualDOM%E4%B8%8Ediff(Vue%E5%AE%9E%E7%8E%B0).MarkDown">VirtualDOM与diff(Vue实现)</a></p>
+
       
 
 
@@ -180,74 +226,11 @@ var _hmt = _hmt || [];
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-四/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-三" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-三/">CSS总结篇(三)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-三/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 定位，浮动,堆叠顺序
-        
-          <a class="article-more-a" href="/CSS总结篇-三/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color4">Vue</a>
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
         </li>
       
 		</ul>
@@ -256,294 +239,81 @@ var _hmt = _hmt || [];
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-三/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/再探Vue虚拟DOM-Diff算法-下/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
 
-
-
-
-
-
-
-
   
-    <article id="post-CSS总结篇-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-二/">CSS总结篇(二)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-二/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 <code>css</code>盒模型,文本排列
-        
-          <a class="article-more-a" href="/CSS总结篇-二/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-二/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-一/">CSS总结篇(一)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-一/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 <code>css</code>用法，层叠优先级，求值策略，选择器
-        
-          <a class="article-more-a" href="/CSS总结篇-一/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-一/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-开篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-开篇/">CSS总结篇 - 开篇</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-开篇/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>前端的基础有三部分组成，<code>html</code>，<code>css</code>，<code>js</code>，其中在学习中最让我感到困惑的就是<code>css</code>。
-        
-          <a class="article-more-a" href="/CSS总结篇-开篇/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-开篇/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-使用hexo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/使用hexo/">使用hexo</a>
-    </h1>
-  
-
-        <a href="/使用hexo/" class="archive-article-date">
-  	<time datetime="2017-03-08T07:32:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-08</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作
-        
-          <a class="article-more-a" href="/使用hexo/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">教程</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/使用hexo/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
+<nav id="article-nav">
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
-    </nav>
+    <a href="/再探Vue虚拟DOM-Diff算法-上/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">再探Vue虚拟DOM/Diff算法(上)</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
+</nav>
+
+
+
+
+
+
+
 
 
           </div>
@@ -581,8 +351,8 @@ var _hmt = _hmt || [];
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

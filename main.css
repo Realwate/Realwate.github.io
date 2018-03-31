@@ -17,6 +17,12 @@
   overflow-y: auto;
   padding-right: 5px;
 }
+.toc-content .toc-child{
+  font-size: 13px;
+}
+.toc-content .toc li{
+  word-break: break-all;
+}
 .toc-article {
     z-index: 1000;
     background: #fff;

@@ -6,18 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>Realwate的博客</title>
+  <title>再探Vue虚拟DOM/Diff算法(上) | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天流若水Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Realwate的博客">
-<meta property="og:url" content="https://realwate.com/page/6/index.html">
+  <meta name="description" content="前言看到知乎某回答，里面谈到数据变化时，父子组件render(虚拟DOM的render)的机制。">
+<meta name="keywords" content="前端,Vue,javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再探Vue虚拟DOM&#x2F;Diff算法(上)">
+<meta property="og:url" content="https://realwate.com/再探Vue虚拟DOM-Diff算法-上/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="天流若水Blog">
+<meta property="og:description" content="前言看到知乎某回答，里面谈到数据变化时，父子组件render(虚拟DOM的render)的机制。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://realwate.com/assets/img/vue/myChild.jpg">
+<meta property="og:image" content="https://realwate.com/assets/img/vue/vdom1.jpg">
+<meta property="og:updated_time" content="2018-03-31T03:51:35.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="天流若水Blog">
+<meta name="twitter:title" content="再探Vue虚拟DOM&#x2F;Diff算法(上)">
+<meta name="twitter:description" content="前言看到知乎某回答，里面谈到数据变化时，父子组件render(虚拟DOM的render)的机制。">
+<meta name="twitter:image" content="https://realwate.com/assets/img/vue/myChild.jpg">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -139,30 +144,92 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-CSS总结篇-四" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-再探Vue虚拟DOM-Diff算法-上" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-四/">CSS总结篇(四)</a>
+    <h1 class="article-title" itemprop="name">
+      再探Vue虚拟DOM/Diff算法(上)
     </h1>
   
 
-        <a href="/CSS总结篇-四/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
+        <a href="/再探Vue虚拟DOM-Diff算法-上/" class="archive-article-date">
+  	<time datetime="2018-03-30T01:51:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-30</time>
 </a>
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本篇内容有 布局,动画，响应式
-        
-          <a class="article-more-a" href="/CSS总结篇-四/#more">more >></a>
-        
+
+      <!-- 目录内容 -->
+             
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">2.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mount"><span class="toc-number">3.</span> <span class="toc-text">$mount</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Render-Watcher"><span class="toc-number">3.1.</span> <span class="toc-text">Render Watcher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue-prototype-render"><span class="toc-number">3.2.</span> <span class="toc-text">Vue.prototype._render</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#createElement"><span class="toc-number">3.2.1.</span> <span class="toc-text">_createElement</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue-prototype-update"><span class="toc-number">3.3.</span> <span class="toc-text">Vue.prototype._update</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#createElm"><span class="toc-number">3.3.1.</span> <span class="toc-text">createElm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#createComponent"><span class="toc-number">3.3.2.</span> <span class="toc-text">createComponent</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
+             <!-- 目录内容结束 -->
+
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看到知乎某<a href="https://www.zhihu.com/question/263768226/answer/273176088">回答</a>，里面谈到数据变化时，父子组件<code>render</code>(虚拟DOM的render)的机制。<a id="more"></a> 之前写过两篇关于<code>Vue</code>的源码的文章<a href="/Vue数据绑定浅析">Vue数据绑定浅析</a>/<a href="/Vue变化侦测机制">Vue变化侦测机制</a>，只介绍了<code>Vue</code>基于<code>Setter</code>,<code>Getter</code>的依赖收集机制，对于<strong>生成虚拟DOM到最终完成DOM更新</strong>这一过程没有深究，这里写两篇补上。<br>本篇主要探究<code>Vue</code>在初始化时生成<code>VNode</code>节点到渲染<code>DOM</code>的过程。使用Vue版本为<code>2.5.16</code></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>以一个简单例子来介绍<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个子组件</span></span><br><span class="line">Vue.component(<span class="string">'MyChild'</span>, &#123;</span><br><span class="line">    props: [<span class="string">'name'</span>],</span><br><span class="line">    render(h) &#123;</span><br><span class="line">        <span class="keyword">return</span> h(<span class="string">'h1'</span>, &#123;</span><br><span class="line">            class:&#123;</span><br><span class="line">                test:<span class="literal">false</span></span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;, <span class="string">`name: <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 父组件由MyChild组成</span></span><br><span class="line"><span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            name: <span class="string">'app'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    render(h) &#123;</span><br><span class="line">        <span class="keyword">return</span> h(<span class="string">'div'</span>, &#123;&#125;, [</span><br><span class="line">            h(<span class="string">'button'</span>, &#123;</span><br><span class="line">                on: &#123;</span><br><span class="line">                    click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                        <span class="keyword">this</span>.name = <span class="string">'child'</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, <span class="string">'点击'</span>),</span><br><span class="line">            h(<span class="string">'MyChild'</span>, &#123;</span><br><span class="line">                class:&#123;</span><br><span class="line">                    test:<span class="literal">true</span></span><br><span class="line">                &#125;,</span><br><span class="line">                props: &#123;</span><br><span class="line">                    name: <span class="keyword">this</span>.name</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;)</span><br><span class="line">        ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">app.$mount(<span class="string">'#app'</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="mount"><a href="#mount" class="headerlink" title="$mount"></a>$mount</h2><p><code>$mount</code>用于将<code>Vue</code>实例挂载到<code>DOM</code>节点上，在源码中就是构造了一个<code>Watcher</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">callHook(vm, <span class="string">'beforeMount'</span>);</span><br><span class="line"><span class="comment">/* ** */</span></span><br><span class="line">vm._watcher = <span class="keyword">new</span> Watcher(vm, updateComponent, noop, <span class="literal">null</span>, <span class="literal">true</span> <span class="comment">/* isRenderWatcher */</span>);</span><br><span class="line"><span class="comment">/* ** */</span></span><br><span class="line">callHook(vm, <span class="string">'mounted'</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="Render-Watcher"><a href="#Render-Watcher" class="headerlink" title="Render Watcher"></a>Render Watcher</h3><p><code>Vue</code>中的<code>Watcher</code>就是在数据变化时被通知的对象，初始化时通过<code>getter</code>访问数据的<code>getter</code>建立依赖，被通知时，它会再次调用<code>getter</code>将值传递给<code>cb</code>。</p>
+<p>此处的<code>vm._watcher</code>是一个特殊的<code>renderWatcher</code>，用于<strong>渲染视图</strong>(生成<code>VNode</code>,执行<code>diff</code>算法，更新DOM)，在构造函数中，该<code>Watcher</code>会立刻执行<code>getter</code>，也就是<code>vm._update(vm._render(), hydrating);</code>，建立到与数据之间的依赖。</p>
+<h3 id="Vue-prototype-render"><a href="#Vue-prototype-render" class="headerlink" title="Vue.prototype._render"></a>Vue.prototype._render</h3><p><strong>这是生成VNode(虚拟DOM)的过程</strong><br><code>Vue.prototype._render</code>会调用<code>render</code>函数，我们的例子中直接传递了<code>render</code>参数，如果没有传递，<code>Vue</code>会将模板编译成<code>render</code>。</p>
+<h4 id="createElement"><a href="#createElement" class="headerlink" title="_createElement"></a>_createElement</h4><p>我们写的<code>render</code>函数中，会传入<code>createElement</code>(也就是<code>h</code>)参数，最终它会调用内部的<code>_createElement</code>。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_createElement</span>(<span class="params">context,</span></span></span><br><span class="line"><span class="function"><span class="params">                      tag,</span></span></span><br><span class="line"><span class="function"><span class="params">                      data,</span></span></span><br><span class="line"><span class="function"><span class="params">                      children,</span></span></span><br><span class="line"><span class="function"><span class="params">                      normalizationType</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/* ** */</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> tag === <span class="string">'string'</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> Ctor;</span><br><span class="line">      <span class="keyword">if</span> (config.isReservedTag(tag)) &#123;</span><br><span class="line">          <span class="comment">// 原生DOM类型</span></span><br><span class="line">          vnode = <span class="keyword">new</span> VNode(</span><br><span class="line">              config.parsePlatformTagName(tag), data, children,</span><br><span class="line">              <span class="literal">undefined</span>, <span class="literal">undefined</span>, context</span><br><span class="line">          );</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(Ctor = resolveAsset(context.$options, <span class="string">'components'</span>, tag))) &#123;</span><br><span class="line">          <span class="comment">// 组件类型 </span></span><br><span class="line">          vnode = createComponent(Ctor, data, context, children, tag);</span><br><span class="line">      &#125; </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 组件类型</span></span><br><span class="line">      vnode = createComponent(tag, data, context, children);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* ** */</span></span><br><span class="line">  <span class="keyword">return</span> vnode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，<code>VNode</code>分为<strong>组件VNode</strong>和<strong>原生DOM VNode</strong>。(PS:关于VNode更多参数，可查看<a href="https://github.com/answershuto/learnVue/blob/master/docs/VNode%E8%8A%82%E7%82%B9.MarkDown">详细</a> )<br>对于DOM类型直接<code>new VNode</code>，参数有<code>children</code>,<code>tag</code>,<code>data</code>,<code>context</code>(就是此时的vm)。<br>对于组件类型，会调用<code>createComponent</code>，代码如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Ctor,</span></span></span><br><span class="line"><span class="function"><span class="params">    data,</span></span></span><br><span class="line"><span class="function"><span class="params">    context,</span></span></span><br><span class="line"><span class="function"><span class="params">    children,</span></span></span><br><span class="line"><span class="function"><span class="params">    tag</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">    <span class="keyword">var</span> listeners = data.on;</span><br><span class="line">    data.on = data.nativeOn;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">     <span class="comment">// data.hook添加钩子 init prepatch insert destroy </span></span><br><span class="line">     <span class="comment">// 在组件不同阶段调用</span></span><br><span class="line">    installComponentHooks(data);</span><br><span class="line">        </span><br><span class="line">   <span class="comment">/* ** */</span></span><br><span class="line">    <span class="keyword">var</span> name = Ctor.options.name || tag;</span><br><span class="line">    <span class="keyword">var</span> vnode = <span class="keyword">new</span> VNode(</span><br><span class="line">        (<span class="string">"vue-component-"</span> + (Ctor.cid) + (name ? (<span class="string">"-"</span> + name) : <span class="string">''</span>)),</span><br><span class="line">        data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</span><br><span class="line">        <span class="comment">// 增加了ComponentOptions</span></span><br><span class="line">        &#123; <span class="attr">Ctor</span>: Ctor, <span class="attr">propsData</span>: propsData, <span class="attr">listeners</span>: listeners, <span class="attr">tag</span>: tag, <span class="attr">children</span>: children &#125;, </span><br><span class="line">        asyncFactory</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> vnode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>组件级别的<code>VNode</code>会增加<code>data.hook</code>以及<code>componentOptions</code>，其中<code>Ctor</code>为创建组件的<code>constructor</code>，可通过<code>Vue.extend(options)</code>得到。<code>MyChild</code>组件的<code>VNode</code>如下<br><img src="/assets/img/vue/myChild.jpg" alt="MyChild"></p>
+<p>至此，<code>Vue.prototype._render</code>完成了<strong>App级别的VNode构造</strong>，<code>VNode</code>结构如下:<br><img src="/assets/img/vue/vdom1.jpg" alt="结构"><br>其中，<code>MyChild</code>组件的<code>VNode</code>会等到转化为真实<code>DOM</code>的过程中再构建</p>
+<h3 id="Vue-prototype-update"><a href="#Vue-prototype-update" class="headerlink" title="Vue.prototype._update"></a>Vue.prototype._update</h3><p><strong>这是虚拟DOM转化到DOM更新的过程</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype._update = <span class="function"><span class="keyword">function</span> (<span class="params">vnode, hydrating</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (vm._isMounted) &#123;</span><br><span class="line">        callHook(vm, <span class="string">'beforeUpdate'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> prevVnode = vm._vnode;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">    <span class="keyword">if</span> (!prevVnode) &#123;</span><br><span class="line">        <span class="comment">// 初始化渲染</span></span><br><span class="line">        vm.$el = vm.__patch__(</span><br><span class="line">            vm.$el, vnode, hydrating, <span class="literal">false</span> <span class="comment">/* removeOnly */</span>,</span><br><span class="line">            vm.$options._parentElm,</span><br><span class="line">            vm.$options._refElm</span><br><span class="line">        );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 更新操作</span></span><br><span class="line">        vm.$el = vm.__patch__(prevVnode, vnode);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>里面会调用<code>vm.__patch__</code>，<strong>到这个函数就开始将<code>VNode</code>转化为<code>DOM</code></strong>。因为是初始化，内部会直接创建新的节点，调用<code>createElm</code>。</p>
+<h4 id="createElm"><a href="#createElm" class="headerlink" title="createElm"></a>createElm</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElm</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        vnode,</span></span></span><br><span class="line"><span class="function"><span class="params">        insertedVnodeQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">        parentElm,</span></span></span><br><span class="line"><span class="function"><span class="params">        refElm,</span></span></span><br><span class="line"><span class="function"><span class="params">        nested,</span></span></span><br><span class="line"><span class="function"><span class="params">        ownerArray,</span></span></span><br><span class="line"><span class="function"><span class="params">        index</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 先尝试按照组件VNode的方式转化为真实DOM 成功则return</span></span><br><span class="line">    <span class="keyword">if</span> (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 按照DOM VNode的方式转化</span></span><br><span class="line">    <span class="keyword">var</span> data = vnode.data;</span><br><span class="line">    <span class="keyword">var</span> children = vnode.children;</span><br><span class="line">    <span class="keyword">var</span> tag = vnode.tag;</span><br><span class="line">    <span class="keyword">if</span> (isDef(tag)) &#123; <span class="comment">// 元素节点</span></span><br><span class="line">        <span class="comment">/* ** */</span></span><br><span class="line">        <span class="comment">// 调用nodeOps创建节点 </span></span><br><span class="line">        vnode.elm = vnode.ns</span><br><span class="line">            ? nodeOps.createElementNS(vnode.ns, tag)</span><br><span class="line">            : nodeOps.createElement(tag, vnode);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建子元素，内部递归调用 createElm</span></span><br><span class="line">        createChildren(vnode, children, insertedVnodeQueue);</span><br><span class="line">        <span class="keyword">if</span> (isDef(data)) &#123;</span><br><span class="line">            <span class="comment">// 调用create钩子 内部调用 cbs.create 系列方法</span></span><br><span class="line">            <span class="comment">// 将VNode 的 attrs,listeners,class 等属性映射到 真实DOM中</span></span><br><span class="line">            invokeCreateHooks(vnode, insertedVnodeQueue);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 调用 nodeOps.appendChild 或者 nodeOps.insertBefore</span></span><br><span class="line">        insert(parentElm, vnode.elm, refElm); </span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isTrue(vnode.isComment)) &#123;<span class="comment">// 注释节点</span></span><br><span class="line">        vnode.elm = nodeOps.createComment(vnode.text);</span><br><span class="line">        insert(parentElm, vnode.elm, refElm);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">// 文本节点</span></span><br><span class="line">        vnode.elm = nodeOps.createTextNode(vnode.text);</span><br><span class="line">        insert(parentElm, vnode.elm, refElm);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>createElm</code>会首先尝试调用<code>createComponent</code>将<strong>组件<code>VNode</code>转化为真实<code>DOM</code></strong>。如果不是组件<code>VNode</code>,则</p>
+<ol>
+<li>调用<code>nodeOps</code>创建真实DOM</li>
+<li><code>createChildren</code>，递归创建子元素</li>
+<li><code>invokeCreateHooks</code>，调用<code>cbs.create</code>钩子将<code>VNode</code>的attrs，class等属性附加到DOM</li>
+<li>调用<code>nodeOps</code>插入到指定DOM节点上</li>
+</ol>
+<h4 id="createComponent"><a href="#createComponent" class="headerlink" title="createComponent"></a>createComponent</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">vnode, insertedVnodeQueue, parentElm, refElm</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i = vnode.data;</span><br><span class="line">    <span class="keyword">if</span> (isDef(i)) &#123;</span><br><span class="line">        <span class="comment">/* ** */</span></span><br><span class="line">        <span class="comment">// 如果是组件VNode，有data.hook.init这个钩子</span></span><br><span class="line">        <span class="keyword">if</span> (isDef(i = i.hook) &amp;&amp; isDef(i = i.init)) &#123;</span><br><span class="line">            i(vnode, <span class="literal">false</span> <span class="comment">/* hydrating */</span>, parentElm, refElm);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// data.hook.init会调用new componentOptions.Ctor 创建组件实例</span></span><br><span class="line">        <span class="comment">// 将vm实例挂载到 vnode.componentInstance</span></span><br><span class="line">        <span class="comment">// 然后再执行$mount 再次递归触发子组件的renderWatcher 等一些列过程</span></span><br><span class="line">        <span class="comment">// 最终子组件生成的DOM 可通过 vnode.componentInstance.$el 拿到</span></span><br><span class="line">        <span class="keyword">if</span> (isDef(vnode.componentInstance)) &#123;</span><br><span class="line">            initComponent(vnode, insertedVnodeQueue);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在将<strong>组件VNode转化为真实DOM时，会调用Ctor创建子组件的vm实例</strong>，这个操作等同于<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(options);</span><br><span class="line">vm.$mount()</span><br></pre></td></tr></table></figure></p>
+<p><code>new</code>调用会触发子组件的<code>create</code>钩子，<code>$mount</code>会构造子组件<code>renderWatcher</code>，生成子组件的<code>VNode</code>并转化为真实<code>DOM</code>。等到执行<code>initComponent</code>，子组件的<code>DOM</code>已经构造完毕。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">initComponent</span> (<span class="params">vnode, insertedVnodeQueue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">    <span class="comment">// 外层app级别的vnode 代表的DOM就是 MyChild组件实例的$el</span></span><br><span class="line">    vnode.elm = vnode.componentInstance.$el;</span><br><span class="line">    <span class="keyword">if</span> (isPatchable(vnode)) &#123;</span><br><span class="line">        <span class="comment">// 将app级别的vnode相关属性 附加到真实DOM中 </span></span><br><span class="line">        invokeCreateHooks(vnode, insertedVnodeQueue);</span><br><span class="line">        setScope(vnode);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* ** */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>initComponent</code>中，会将外层app级别的<code>VNode</code>相关属性映射成<code>DOM</code>属性(<strong>调用cbs.create系列方法</strong>)附加到<code>vnode.elm</code>上，如<code>class</code>,<code>attrs</code>,<code>style</code>等。</p>
+<p>至此，通过<code>createElm</code>，<code>createComponent</code>，<code>createChildren</code>一系列递归调用，<strong>完成了整棵真实DOM树的构造</strong>，本质上，这是一个深度优先的构造过程(递归)。构造完成后，会插入到旧的DOM <code>#app</code> 之前，然后将<code>#app</code>删除，</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，<code>Vue</code>从初始化到渲染视图的过程如下</p>
+<ol>
+<li>调用组件<code>render</code>函数生成<code>VNode</code></li>
+<li><code>createElm</code>，调用<code>nodeOps</code>和<code>cbs.create</code>开始转化真实DOM</li>
+<li>转化过程中，如果<code>VNode</code>是代表一个组件，转到第一步</li>
+<li>完成整个<code>DOM</code>树的构造，插入到<code>el</code>前，并删除<code>el</code></li>
+</ol>
+
       
 
 
@@ -180,74 +247,11 @@ var _hmt = _hmt || [];
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-四/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-三" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-三/">CSS总结篇(三)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-三/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 定位，浮动,堆叠顺序
-        
-          <a class="article-more-a" href="/CSS总结篇-三/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color4">Vue</a>
         </li>
        
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color1">javascript</a>
         </li>
       
 		</ul>
@@ -256,294 +260,90 @@ var _hmt = _hmt || [];
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-三/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/再探Vue虚拟DOM-Diff算法-上/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
 
-
-
-
-
-
-
-
   
-    <article id="post-CSS总结篇-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
+<nav id="article-nav">
+  
+    <a href="/再探Vue虚拟DOM-Diff算法-下/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-二/">CSS总结篇(二)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-二/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 <code>css</code>盒模型,文本排列
+          再探Vue虚拟DOM/Diff算法(下)
         
-          <a class="article-more-a" href="/CSS总结篇-二/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-二/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-一/">CSS总结篇(一)</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-一/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇内容有 <code>css</code>用法，层叠优先级，求值策略，选择器
-        
-          <a class="article-more-a" href="/CSS总结篇-一/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-一/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-CSS总结篇-开篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/CSS总结篇-开篇/">CSS总结篇 - 开篇</a>
-    </h1>
-  
-
-        <a href="/CSS总结篇-开篇/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:32:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>前端的基础有三部分组成，<code>html</code>，<code>css</code>，<code>js</code>，其中在学习中最让我感到困惑的就是<code>css</code>。
-        
-          <a class="article-more-a" href="/CSS总结篇-开篇/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">前端</a>
-        </li>
-       
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color4">css</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/CSS总结篇-开篇/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-使用hexo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/使用hexo/">使用hexo</a>
-    </h1>
-  
-
-        <a href="/使用hexo/" class="archive-article-date">
-  	<time datetime="2017-03-08T07:32:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-08</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作
-        
-          <a class="article-more-a" href="/使用hexo/#more">more >></a>
-        
-      
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">教程</a>
-        </li>
-      
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/使用hexo/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
+      </div>
+    </a>
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
-    </nav>
+    <a href="/谈谈浏览器同源策略/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">谈谈浏览器同源策略</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
+</nav>
+
+
+
+
+
+
+
 
 
           </div>
@@ -581,8 +381,8 @@ var _hmt = _hmt || [];
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
