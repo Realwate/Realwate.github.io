@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://realwate.com">
-  <title>Tag: 综合 | Realwate的博客</title>
+  <title>浅谈koa2与express中间件差异 | Realwate的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天流若水Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Realwate的博客">
-<meta property="og:url" content="https://realwate.com/tags/综合/page/2/index.html">
+  <meta name="description" content="起cnode问题以及知乎问题都有谈到koa2的中间件是洋葱模型，不同于express。之前一直认为express中间件与koa2中间件机制是一样的，于是有了此文。">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈koa2与express中间件差异">
+<meta property="og:url" content="https://realwate.com/浅谈koa2与express中间件机制/index.html">
 <meta property="og:site_name" content="Realwate的博客">
-<meta property="og:description" content="天流若水Blog">
+<meta property="og:description" content="起cnode问题以及知乎问题都有谈到koa2的中间件是洋葱模型，不同于express。之前一直认为express中间件与koa2中间件机制是一样的，于是有了此文。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-02T02:02:28.054Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Realwate的博客">
-<meta name="twitter:description" content="天流若水Blog">
+<meta name="twitter:title" content="浅谈koa2与express中间件差异">
+<meta name="twitter:description" content="起cnode问题以及知乎问题都有谈到koa2的中间件是洋葱模型，不同于express。之前一直认为express中间件与koa2中间件机制是一样的，于是有了此文。">
   
   
     <link rel="icon" href="/assets/img/favicon.jpg">
@@ -139,140 +141,163 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-浅谈koa2与express中间件机制" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/JWT理解/" class="archive-article-date">
-  	<time datetime="2017-03-14T07:48:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/JWT理解/">JWT理解</a>
+    <h1 class="article-title" itemprop="name">
+      浅谈koa2与express中间件差异
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        <a href="/浅谈koa2与express中间件机制/" class="archive-article-date">
+  	<time datetime="2018-04-02T02:01:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-02</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+
+      <!-- 目录内容 -->
+             
+               <div class="toc-wrapper">
+                   <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+                   <span class="btn-bg"></span>
+                   <span class="btn-text">文章导航</span>
+                   </p>
+                   <div id="toc-article" class="toc-article">
+                     <div class="toc-header">
+                       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+                       <strong class="toc-title">目录</strong>
+                     </div>
+                     <div class="toc-content">
+                       <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#起"><span class="toc-number">1.</span> <span class="toc-text">起</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#express"><span class="toc-number">2.</span> <span class="toc-text">express</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#koa2"><span class="toc-number">3.</span> <span class="toc-text">koa2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                     </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                 function showToc(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:block");
+                     show_toc_btn.setAttribute("style","display:none");
+                     };
+                 function showBtn(){
+                     var toc_article = document.getElementById("toc-article");
+                     var show_toc_btn = document.getElementById("show-toc-btn");
+                     toc_article.setAttribute("style","display:none");
+                     show_toc_btn.setAttribute("style","display:block");
+                     };
+                </script>
+             
+             <!-- 目录内容结束 -->
+
+        <h3 id="起"><a href="#起" class="headerlink" title="起"></a>起</h3><p><a href="https://cnodejs.org/topic/59a90638ea0aea6b0c64e6ed">cnode问题</a>以及<a href="https://www.zhihu.com/question/270066081/answer/354859964">知乎问题</a>都有谈到<code>koa2</code>的中间件是<strong>洋葱模型</strong>，不同于<code>express</code>。之前一直认为<code>express</code>中间件与<code>koa2</code>中间件机制是一样的，于是有了此文。<a id="more"></a></p>
+<h3 id="express"><a href="#express" class="headerlink" title="express"></a>express</h3><p>在<code>express</code>的年代，对于异步没有太多的办法，<code>node</code>中只能通过<code>error first</code>风格的回调函数来处理异步，基于此设计的<code>express</code>自然也是继承了这种思想。从宏观的角度来看，无论同步异步，<code>express</code>的中间件本质上就是一个函数，中间件相互调用实际上就是形成了一个<code>Call Stack</code>，它天然就是一个所谓的洋葱模型。<br>但是，<strong>一旦涉及到了异步，这种表现出来的洋葱模型与我们期望的其实是不一致的</strong>。现有以下代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line"></span><br><span class="line"><span class="comment">// middleware 1</span></span><br><span class="line">app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'1'</span>)</span><br><span class="line">    next();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'5'</span>)</span><br><span class="line">   </span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// middleware 2</span></span><br><span class="line">app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'2'</span>)</span><br><span class="line">    <span class="comment">// 异步操作</span></span><br><span class="line">    asyncOperation().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        next();</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'4'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// middleware 3</span></span><br><span class="line">app.use(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'3'</span>)</span><br><span class="line">    next();</span><br><span class="line">&#125;)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncOperation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">rel</span>)=&gt;</span>&#123;</span><br><span class="line">        setTimeout(rel,<span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure></p>
+<p>中间件按<code>1 -&gt; 2 -&gt; 3</code>的顺序调用，我们期望的输出是<code>1,2,3,4,5</code>，但是实际输出<code>1,2,5,3,4</code>。<br>其实也很好理解，<code>next</code>会调用下一个中间件，这是普通的函数调用，<code>middleware2</code>中的<code>next</code>还没调用到，但是函数已经执行完毕，返回到<code>middleware1</code>，输出<code>5</code>。</p>
+<h3 id="koa2"><a href="#koa2" class="headerlink" title="koa2"></a>koa2</h3><p>新时代的<code>javascript</code>给我们带来了<code>Promise</code>，从某种意义上来说，它其实就是标准化了的回调，封装了异步操作，在等到异步操作的结果后会把值返回给调用者。还有<code>generator</code>，它打破了函数的完整运行时，配合<code>yield</code>让我们能控制一个函数内部的运行过程，在<code>javascript</code>中，主要用于控制异步的执行流程。最后，基于<code>Promise + Generator</code>的<code>async/await</code>基本解决了我们的异步难题，让我们可以用同步的方式写异步的代码。<br>而<code>koa2</code>正是完全使用新的思路来处理异步，它与<code>express</code>的差别主要就是<code>next</code>函数的设计。核心代码是<code>compose</code>函数，代码如下所示。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span> (<span class="params">middleware</span>) </span>&#123;</span><br><span class="line">   <span class="comment">/* ** */</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">context, next</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span> dispatch(<span class="number">0</span>)</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span> (<span class="params">i</span>) </span>&#123;</span><br><span class="line">      index = i</span><br><span class="line">      <span class="keyword">let</span> fn = middleware[i]</span><br><span class="line">      <span class="keyword">if</span> (i === middleware.length) fn = next</span><br><span class="line">      <span class="comment">// 最后一个middleware调用next</span></span><br><span class="line">      <span class="keyword">if</span> (!fn) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="comment">// 用Promise.resolve</span></span><br><span class="line">          <span class="comment">// 将 middleware执行结果包装成Promise</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(fn(context,</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">next</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> dispatch(i + <span class="number">1</span>)</span><br><span class="line">        &#125;))</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(err)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>dispatch</code>会将中间件函数执行结果包装成<code>Promise</code>，通过<code>Promise.resolve</code>统一了同步异步操作，而<code>next</code>也就是通过<code>dispatch</code>调用下一个中间件。<br>上面的例子用<code>koa</code>改写如下，输出<code>1,2,3,4,5</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>)</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'1'</span>)</span><br><span class="line">  <span class="keyword">await</span> next(); <span class="comment">// 需要await 等待下一个中间件Promise决议</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'5'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'2'</span>)</span><br><span class="line">  <span class="keyword">await</span> asyncOperation();</span><br><span class="line">  next();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'4'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'3'</span>)</span><br><span class="line">  <span class="keyword">await</span> next();</span><br><span class="line">&#125;)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncOperation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">rel,rej</span>)=&gt;</span>&#123;</span><br><span class="line">      setTimeout(rel,<span class="number">1000</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">app.listen(<span class="number">3002</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>归根结底，<code>express</code>与<code>koa2</code>中间件的差异是我们处理异步的方式出现了变化，从基于回调到<code>Promise</code>，<code>generator</code>,<code>async</code>/<code>await</code>,<code>javascript</code>从语言层面上赋予了我们更高层的抽象，让我们以同步的方式去写异步的代码，以前基于回调不容易实现的功能，现在可以轻松实现了。</p>
+
+      
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list">
 			 
         <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
+        	<a href="javascript:void(0)" class="article-tag-list-link color5">node</a>
         </li>
       
 		</ul>
 	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/git整理/" class="archive-article-date">
-  	<time datetime="2017-03-10T10:09:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/git整理/">git整理</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/关于https/" class="archive-article-date">
-  	<time datetime="2017-03-10T02:11:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/关于https/">https</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list">
-			 
-        <li class="article-tag-list-item">
-        	<a href="javascript:void(0)" class="article-tag-list-link color3">综合</a>
-        </li>
       
-		</ul>
-	</div>
 
-          
-
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://realwate.com/浅谈koa2与express中间件机制/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/综合/">&laquo; Prev</a><a class="page-number" href="/tags/综合/">1</a><span class="page-number current">2</span>
-    </nav>
   
+<nav id="article-nav">
+  
+  
+    <a href="/再探Vue虚拟DOM-Diff算法-下/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">再探Vue虚拟DOM/Diff算法(下)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
 
 
           </div>
@@ -311,9 +336,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
